@@ -51,6 +51,17 @@ body {
   gap: 56px;
 }
 
+/* Dark brand band behind the header and hero, in both themes.
+   It is also what link previews (WhatsApp, Telegram) capture. */
+.band {
+  --paper: #0E1016; --ink: #ECEEF4; --muted: #9AA0B3; --line: #2A2E3B;
+  --card: #161922; --accent: #FF6A33; --accent-ink: #14100E;
+  background: var(--paper); color: var(--ink);
+  color-scheme: dark;
+}
+.band-inner { padding-block: 20px 64px; }
+.band + .wrap { padding-top: 48px; }
+
 /* top bar */
 .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
@@ -194,7 +205,7 @@ footer a { color: var(--ink); }
 }
 </style>
 
-<div class="wrap">
+<div class="band"><div class="wrap band-inner">
   <header class="top">
     <div class="brand">
       <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5l8 7-8 7V5zm9 0l8 7-8 7V5z"/></svg></span>
@@ -238,6 +249,9 @@ footer a { color: var(--ink); }
     </div>
   </section>
 
+</div></div>
+
+<div class="wrap">
   <section class="features">
     <div class="feature">
       <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 5l8 7-8 7V5zm10 0h2v14h-2zm4 0h2v14h-2z"/></svg></div>
