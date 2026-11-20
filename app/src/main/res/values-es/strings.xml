@@ -18,4 +18,10 @@
     <string name="done_title">Todo funciona</string>
     <string name="done_text">Los anuncios de YouTube ya se saltan solos. Solo hay que hacerlo una vez: sigue activado tras reiniciar y actualizar.</string>
     <string name="version">Versión %s</string>
+    <string name="bat_title">Que el móvil no apague AdSkipper</string>
+    <string name="bat_text">El móvil puede detener AdSkipper para ahorrar batería. Pulsa el botón y elige «Permitir». Apenas afecta a la batería.</string>
+    <string name="bat_btn">Permitir en segundo plano</string>
+    <string name="broken_title">AdSkipper está activado, pero no funciona</string>
+    <string name="broken_text">Pasa cuando el móvil ha detenido el servicio. Desactiva el interruptor de AdSkipper y vuelve a activarlo.</string>
+    <string name="broken_btn">Abrir el interruptor</string>
 </resources>

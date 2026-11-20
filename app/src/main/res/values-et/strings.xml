@@ -18,4 +18,10 @@
     <string name="done_title">Kõik töötab</string>
     <string name="done_text">YouTube’i reklaamid jäetakse nüüd automaatselt vahele. Seda tuleb teha ainult üks kord: see jääb sisse ka pärast taaskäivitust ja uuendusi.</string>
     <string name="version">Versioon %s</string>
+    <string name="bat_title">Ärge laske telefonil AdSkipperit välja lülitada</string>
+    <string name="bat_text">Telefon võib aku säästmiseks AdSkipperi peatada. Vajutage nuppu ja valige „Luba“. Akule see peaaegu ei mõju.</string>
+    <string name="bat_btn">Luba taustal töötada</string>
+    <string name="broken_title">AdSkipper on sees, kuid ei tööta</string>
+    <string name="broken_text">Nii juhtub, kui telefon on teenuse peatanud. Lülitage AdSkipperi lüliti välja ja uuesti sisse.</string>
+    <string name="broken_btn">Ava lüliti</string>
 </resources>

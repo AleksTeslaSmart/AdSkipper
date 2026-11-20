@@ -18,4 +18,10 @@
     <string name="done_title">Viss darbojas</string>
     <string name="done_text">YouTube reklāmas tagad tiek izlaistas automātiski. Tas jādara tikai vienreiz: pēc restartēšanas un atjauninājumiem tas paliek ieslēgts.</string>
     <string name="version">Versija %s</string>
+    <string name="bat_title">Neļaujiet tālrunim izslēgt AdSkipper</string>
+    <string name="bat_text">Tālrunis var apturēt AdSkipper, lai taupītu akumulatoru. Nospiediet pogu un izvēlieties “Atļaut”. Akumulatoru tas gandrīz neietekmē.</string>
+    <string name="bat_btn">Atļaut darbu fonā</string>
+    <string name="broken_title">AdSkipper ir ieslēgts, bet nedarbojas</string>
+    <string name="broken_text">Tā notiek, ja tālrunis ir apturējis pakalpojumu. Izslēdziet AdSkipper slēdzi un ieslēdziet to vēlreiz.</string>
+    <string name="broken_btn">Atvērt slēdzi</string>
 </resources>

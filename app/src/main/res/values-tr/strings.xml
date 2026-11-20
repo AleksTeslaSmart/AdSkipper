@@ -18,4 +18,10 @@
     <string name="done_title">Her şey çalışıyor</string>
     <string name="done_text">YouTube reklamları artık kendiliğinden geçilir. Bunu yalnızca bir kez yapmanız gerekir: yeniden başlatma ve güncellemelerden sonra da açık kalır.</string>
     <string name="version">Sürüm %s</string>
+    <string name="bat_title">Telefonun AdSkipper’ı kapatmasına izin vermeyin</string>
+    <string name="bat_text">Telefon pil tasarrufu için AdSkipper’ı durdurabilir. Düğmeye dokunun ve «İzin ver»i seçin. Pile neredeyse hiç etkisi olmaz.</string>
+    <string name="bat_btn">Arka planda çalışmaya izin ver</string>
+    <string name="broken_title">AdSkipper açık ama çalışmıyor</string>
+    <string name="broken_text">Bu, telefon hizmeti durdurduğunda olur. AdSkipper anahtarını kapatıp yeniden açın.</string>
+    <string name="broken_btn">Anahtarı aç</string>
 </resources>
