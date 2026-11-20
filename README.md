@@ -1,36 +1,52 @@
-# AdSkipper — автопропуск рекламы в YouTube (Android)
+# AdSkipper — auto-skip YouTube ads on Android
 
-Приложение работает как **служба специальных возможностей** (Accessibility Service):
-следит только за окнами приложения YouTube и, как только появляется кнопка
-«Пропустить», нажимает её. По желанию выключает звук, пока идёт реклама.
+**AdSkipper taps “Skip ad” for you the moment it appears in the YouTube app, and mutes the sound while an ad is playing.** Free, open source, no account, no tracking.
 
-## Что умеет
-- Нажимает «Пропустить рекламу» сразу, как только кнопка становится активной.
-- Ищет кнопку по id (`skip_ad_button`, `modern_skip_ad_text` и др.) и по тексту на разных языках.
-- Если обычный клик не сработал, тапает жестом по центру кнопки.
-- Выключает звук на время рекламы (отключается в настройках приложения).
-- Считает пропущенную рекламу.
+**[⬇ Download the APK](https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk)** · **[Website & install guide](https://claude.ai/artifact/Kxt33ovzCAr3y7yEzrCk9N)** · [All releases](https://github.com/AleksTeslaSmart/AdSkipper/releases)
 
-## Ограничения
-- **Непропускаемую рекламу** (короткие ролики без кнопки) пропустить нельзя, её можно только заглушить.
-- Работает только в официальном приложении YouTube (`com.google.android.youtube`).
-- Если YouTube поменяет интерфейс, может понадобиться добавить новые id/тексты в
-  `SKIP_IDS` / `SKIP_TEXTS` в `SkipAdService.kt`.
+Android 7.0+ · ~650 KB · 11 languages: English, Русский, Українська, Español, Deutsch, Français, Português, Türkçe, Latviešu, Lietuvių, Eesti
 
-## Сборка
-1. Установите [Android Studio](https://developer.android.com/studio).
-2. **File → Open** → выберите папку `AdSkipper`. Studio сама скачает Gradle и SDK.
-3. Подключите телефон с включённой «Отладкой по USB» и нажмите ▶ **Run**,
-   либо **Build → Build APK(s)** и скопируйте `app/build/outputs/apk/debug/app-debug.apk` на телефон.
+## What it does
 
-## Включение на телефоне
-1. Откройте AdSkipper → «Включить сервис».
-2. В «Специальных возможностях» найдите AdSkipper и включите.
-3. **Android 13+:** если переключатель неактивен — Настройки → Приложения → AdSkipper →
-   ⋮ → «Разрешить ограниченные настройки», затем повторите шаг 2.
-4. На Xiaomi/Huawei/Samsung разрешите автозапуск и отключите оптимизацию батареи для
-   AdSkipper, иначе система может выгружать службу.
+- **Taps “Skip” automatically** as soon as the button becomes active. You don't touch anything.
+- **Mutes ads from the first second.** It recognises the ad label with its timer (“Ad · 0:15”) and turns the sound back on when your video starts. You can switch muting off.
+- **Sees only YouTube.** The service is limited to the official YouTube app (`com.google.android.youtube`).
+- **Updates in place.** The app tells you when a new version is out; it installs over the old one.
 
-## Конфиденциальность
-Служба видит только окна YouTube (`packageNames` в `accessibility_config.xml`),
-не требует интернета и никуда не передаёт данные.
+Ads without a “Skip” button can't be skipped, but they will be muted.
+
+## How it works
+
+AdSkipper is an Android [accessibility service](https://developer.android.com/guide/topics/ui/accessibility/service). It watches the YouTube app's screen for the skip button (by view id and by its text in many languages) and presses it. That's all: no ad lists, no network filtering, no root.
+
+## Install
+
+1. [Download AdSkipper.apk](https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk) on your phone and open it. Allow your browser to install apps when asked.
+2. Open AdSkipper and follow the two buttons on the screen:
+   - **Unlock** (Android 13+): in the screen that opens, tap ⋮ → *Allow restricted settings*.
+   - **Turn on**: switch AdSkipper on and tap *Allow*. You're taken back to the app automatically.
+
+The [website](https://claude.ai/artifact/Kxt33ovzCAr3y7yEzrCk9N) explains every warning your phone may show and what to tap.
+
+## Privacy
+
+- Reads only the YouTube app's screen, only to find the skip button and the ad label.
+- Sends no data anywhere. The only network request checks GitHub for a newer version.
+- No analytics, no ads, no account.
+
+## Build
+
+Open the folder in Android Studio, or build with Gradle 8.10+ and JDK 17:
+
+```bash
+gradle assembleDebug
+```
+
+Releases are built and signed by GitHub Actions ([build.yml](.github/workflows/build.yml)).
+
+---
+
+### Русский
+
+AdSkipper сам нажимает «Пропустить» на рекламе в приложении YouTube и выключает звук, пока идёт реклама. Бесплатно, с открытым кодом, без регистрации и слежки.
+**[Скачать APK](https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk)** · **[Сайт и инструкция](https://claude.ai/artifact/Kxt33ovzCAr3y7yEzrCk9N)**
