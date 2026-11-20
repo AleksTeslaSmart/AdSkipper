@@ -32,11 +32,29 @@ class SkipAdService : AccessibilityService() {
             "$YT:id/skip_ad_button_container",
         )
 
-        // Признаки того, что сейчас идёт реклама
+        // Признаки того, что сейчас идёт реклама (id элементов в разных версиях YouTube)
         private val AD_IDS = listOf(
             "$YT:id/ad_progress_text",
             "$YT:id/ad_countdown",
             "$YT:id/ad_badge",
+            "$YT:id/ad_text",
+            "$YT:id/ad_attribution",
+            "$YT:id/ad_info_button",
+            "$YT:id/ad_cta_button",
+            "$YT:id/player_learn_more_button",
+            "$YT:id/visit_advertiser",
+            "$YT:id/skip_ad_countdown",
+        )
+
+        // Метка рекламы в плеере на разных языках: «Реклама», «Ad», «Sponsored»…
+        private const val AD_WORDS = "Реклама|Ad|Ads|Sponsored|Anzeige|Werbung|Annonce|Publicité|Anuncio|" +
+            "Anúncio|Reklam|Reklāma|Reklama|Reklaam"
+
+        // Чтобы не путать с пометкой «Реклама» в ленте, считаем рекламой только метку,
+        // за которой идёт таймер или номер ролика: «Реклама · 0:15», «Ad 1 of 2», «Реклама 1 из 2».
+        private val AD_LABEL = Regex(
+            "^($AD_WORDS)(?![\\p{L}\\p{N}]).{0,12}(\\d{1,2}:\\d{2}|\\d+\\s*(of|из|з|von|de|sur|/|no|iš)\\s*\\d+)",
+            RegexOption.IGNORE_CASE
         )
 
         // Запасной вариант: поиск по тексту (разные языки интерфейса)
@@ -62,7 +80,7 @@ class SkipAdService : AccessibilityService() {
     // Пока реклама на экране — проверяем каждые 500 мс, даже если событий нет
     private val pollRunnable = object : Runnable {
         override fun run() {
-            if (scan()) handler.postDelayed(this, 500) else polling = false
+            if (scan()) handler.postDelayed(this, 300) else polling = false
         }
     }
 
@@ -86,7 +104,7 @@ class SkipAdService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event?.packageName?.toString() != YT) return
         val now = System.currentTimeMillis()
-        if (now - lastScan < 250) return   // не нагружаем процессор на каждом событии
+        if (now - lastScan < 150) return   // не нагружаем процессор на каждом событии
         lastScan = now
         if (scan() && !polling) {
             polling = true
@@ -103,12 +121,32 @@ class SkipAdService : AccessibilityService() {
         }
 
         val skipNode = findSkipButton(root)
+        // Реклама видна сразу с первой секунды — по меткам и таймеру, не дожидаясь,
+        // пока появится кнопка «Пропустить» (она появляется только через ~5 секунд).
         val adVisible = skipNode != null ||
-            AD_IDS.any { id -> root.findAccessibilityNodeInfosByViewId(id).any { it.isVisibleToUser } }
+            AD_IDS.any { id -> root.findAccessibilityNodeInfosByViewId(id).any { it.isVisibleToUser } } ||
+            hasAdLabel(root)
 
         if (skipNode != null) clickNode(skipNode)
         updateMute(adVisible)
         return adVisible
+    }
+
+    /** Обходит экран и ищет метку вида «Реклама · 0:15». Ограничен по числу элементов, чтобы не тормозить. */
+    private fun hasAdLabel(root: AccessibilityNodeInfo): Boolean {
+        val queue = ArrayDeque<AccessibilityNodeInfo>()
+        queue.add(root)
+        var seen = 0
+        while (queue.isNotEmpty() && seen < 600) {
+            val n = queue.removeFirst()
+            seen++
+            for (s in arrayOf(n.text, n.contentDescription)) {
+                val t = s?.toString()?.trim() ?: continue
+                if (t.length in 2..60 && AD_LABEL.containsMatchIn(t) && n.isVisibleToUser) return true
+            }
+            for (i in 0 until n.childCount) n.getChild(i)?.let { queue.add(it) }
+        }
+        return false
     }
 
     private fun findSkipButton(root: AccessibilityNodeInfo): AccessibilityNodeInfo? {
