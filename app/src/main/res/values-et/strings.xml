@@ -17,4 +17,5 @@
     <string name="step2_btn">Lülita sisse</string>
     <string name="done_title">Kõik töötab</string>
     <string name="done_text">YouTube’i reklaamid jäetakse nüüd automaatselt vahele. Seda tuleb teha ainult üks kord: see jääb sisse ka pärast taaskäivitust ja uuendusi.</string>
+    <string name="version">Versioon %s</string>
 </resources>

@@ -17,4 +17,5 @@
     <string name="step2_btn">Einschalten</string>
     <string name="done_title">Alles läuft</string>
     <string name="done_text">YouTube-Werbung wird jetzt automatisch übersprungen. Das musst du nur einmal machen: Es bleibt nach Neustarts und Updates an.</string>
+    <string name="version">Version %s</string>
 </resources>

@@ -17,4 +17,5 @@
     <string name="step2_btn">Увімкнути</string>
     <string name="done_title">Усе працює</string>
     <string name="done_text">Реклама в YouTube тепер пропускається сама. Вмикати потрібно лише один раз: після перезавантаження й оновлень усе лишається увімкненим.</string>
+    <string name="version">Версія %s</string>
 </resources>

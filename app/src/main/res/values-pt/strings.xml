@@ -17,4 +17,5 @@
     <string name="step2_btn">Ativar</string>
     <string name="done_title">Tudo funcionando</string>
     <string name="done_text">Os anúncios do YouTube agora são pulados sozinhos. Só precisa fazer isso uma vez: continua ativo depois de reiniciar e atualizar.</string>
+    <string name="version">Versão %s</string>
 </resources>

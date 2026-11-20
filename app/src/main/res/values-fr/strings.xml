@@ -17,4 +17,5 @@
     <string name="step2_btn">Activer</string>
     <string name="done_title">Tout fonctionne</string>
     <string name="done_text">Les pubs YouTube sont maintenant passées automatiquement. À faire une seule fois : cela reste actif après un redémarrage ou une mise à jour.</string>
+    <string name="version">Version %s</string>
 </resources>

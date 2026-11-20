@@ -17,4 +17,5 @@
     <string name="step2_btn">Включить</string>
     <string name="done_title">Всё работает</string>
     <string name="done_text">Реклама в YouTube теперь пропускается сама. Включать нужно только один раз: после перезагрузки и обновлений всё остаётся включённым.</string>
+    <string name="version">Версия %s</string>
 </resources>

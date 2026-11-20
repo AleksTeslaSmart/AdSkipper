@@ -17,4 +17,5 @@
     <string name="step2_btn">Ieslēgt</string>
     <string name="done_title">Viss darbojas</string>
     <string name="done_text">YouTube reklāmas tagad tiek izlaistas automātiski. Tas jādara tikai vienreiz: pēc restartēšanas un atjauninājumiem tas paliek ieslēgts.</string>
+    <string name="version">Versija %s</string>
 </resources>

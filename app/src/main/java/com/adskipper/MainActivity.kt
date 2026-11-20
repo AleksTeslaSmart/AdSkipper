@@ -117,7 +117,14 @@ class MainActivity : Activity() {
         root.addView(text(getString(R.string.skipped_count, prefs.getInt("skipped", 0)), 15f, MUTED).apply {
             setPadding(px(4), 0, 0, 0)
         })
+        root.addView(space(32))
+        root.addView(text(getString(R.string.version, installedVersionName()), 13f, MUTED).apply {
+            gravity = Gravity.CENTER
+        })
     }
+
+    private fun installedVersionName(): String =
+        packageManager.getPackageInfo(packageName, 0).versionName ?: "?"
 
     private fun renderDone() {
         root.addView(card {
