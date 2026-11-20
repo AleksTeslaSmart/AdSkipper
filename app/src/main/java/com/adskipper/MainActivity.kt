@@ -1,6 +1,7 @@
 package com.adskipper
 
 import android.app.Activity
+import android.app.AppOpsManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -73,6 +74,11 @@ class MainActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
+        // Вернулись из настроек, а сервис так и не включился — значит, скорее всего,
+        // блокировка не снята: снова показываем шаг 1 активным.
+        if (prefs.getBoolean(PREF_AWAITING, false) && !isServiceEnabled()) {
+            prefs.edit().putBoolean(PREF_AWAITING, false).putBoolean(PREF_UNLOCK_VISITED, false).apply()
+        }
         render()
         checkForUpdate()
     }
@@ -134,8 +140,12 @@ class MainActivity : Activity() {
 
     private fun renderSteps() {
         // Блокировка «настроек с ограниченным доступом» есть с Android 13.
-        val needsUnlock = Build.VERSION.SDK_INT >= 33
-        val unlockVisited = prefs.getBoolean(PREF_UNLOCK_VISITED, false)
+        // Спрашиваем у системы, снята ли она на самом деле. Если система не отвечает
+        // (редкие прошивки), считаем шаг выполненным, только если человек заходил туда,
+        // а неудачная попытка включить сервис снова делает шаг 1 активным (см. onResume).
+        val unlocked = restrictedSettingsUnlocked()
+        val needsUnlock = Build.VERSION.SDK_INT >= 33 && unlocked != true
+        val unlockVisited = unlocked == null && prefs.getBoolean(PREF_UNLOCK_VISITED, false)
         var n = 1
 
         if (needsUnlock) {
@@ -206,6 +216,24 @@ class MainActivity : Activity() {
         startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
             .putExtra(":settings:fragment_args_key", key)
             .putExtra(":settings:show_fragment_args", Bundle().apply { putString(":settings:fragment_args_key", key) }))
+    }
+
+    /**
+     * true — блокировки нет или она снята; false — блокировка стоит; null — система не ответила.
+     * Android хранит это как разрешение (app-op) «access_restricted_settings» нашего приложения.
+     */
+    private fun restrictedSettingsUnlocked(): Boolean? {
+        if (Build.VERSION.SDK_INT < 33) return true
+        return try {
+            val ops = getSystemService(AppOpsManager::class.java)
+            when (ops.unsafeCheckOpNoThrow("android:access_restricted_settings", applicationInfo.uid, packageName)) {
+                AppOpsManager.MODE_ALLOWED, AppOpsManager.MODE_DEFAULT -> true
+                AppOpsManager.MODE_ERRORED, AppOpsManager.MODE_IGNORED -> false
+                else -> null
+            }
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun isServiceEnabled(): Boolean {

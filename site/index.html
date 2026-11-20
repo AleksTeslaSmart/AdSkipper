@@ -179,6 +179,22 @@ ol.steps b { display: block; font-weight: 700; margin-bottom: 2px; }
 ol.steps span { color: var(--muted); }
 .path { font-family: var(--font-mono); font-size: 0.85em; color: var(--ink); background: color-mix(in srgb, var(--line) 60%, transparent); padding: 1px 6px; border-radius: 4px; }
 
+/* permissions: what the phone shows -> what to tap */
+.perms { display: flex; flex-direction: column; gap: 20px; }
+.perms-head { display: flex; flex-direction: column; gap: 8px; max-width: 40em; }
+.perms-head h2 { font-size: clamp(1.3rem, 3vw, 1.75rem); font-weight: 700; letter-spacing: -0.02em; }
+.perms-head p { margin: 0; color: var(--muted); }
+.perm-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.perm { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 10px 24px; align-items: center;
+  padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+.perm-see { display: flex; gap: 10px; align-items: flex-start; font-weight: 700; min-width: 0; }
+.perm-see svg { width: 18px; height: 18px; flex: none; fill: var(--accent); margin-top: 3px; }
+.perm-do { color: var(--muted); min-width: 0; padding-left: 16px; border-left: 2px solid var(--accent); }
+@media (max-width: 860px) {
+  .perm { grid-template-columns: minmax(0, 1fr); }
+  .perm-do { padding-left: 28px; border-left: 0; }
+}
+
 /* notes */
 .notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 40px; padding: 24px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); }
 .notes h2 { grid-column: 1 / -1; font-size: 0.78rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; }
@@ -287,6 +303,35 @@ footer a { color: var(--ink); }
     </ol>
   </section>
 
+  <section class="perms" id="permissions">
+    <div class="perms-head">
+      <h2 data-i18n="pt_title">Что нажимать, когда телефон спрашивает</h2>
+      <p data-i18n="pt_sub">Для приложений не из Google Play Android показывает несколько предупреждений. Это нормально — вот что нажимать.</p>
+    </div>
+    <ol class="perm-list">
+      <li class="perm">
+        <div class="perm-see"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg><span data-i18n="p1s">«Установка неизвестных приложений» или красное окно «Danger» (Xiaomi)</span></div>
+        <div class="perm-do" data-i18n="p1d">Поставьте галочку «Я осознаю риски» и нажмите OK. Это нужно один раз — для браузера.</div>
+      </li>
+      <li class="perm">
+        <div class="perm-see"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg><span data-i18n="p2s">Play Protect: «Небезопасное приложение заблокировано»</span></div>
+        <div class="perm-do" data-i18n="p2d">Нажмите «Подробнее» → «Всё равно установить». Отправлять приложение на проверку не нужно.</div>
+      </li>
+      <li class="perm">
+        <div class="perm-see"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg><span data-i18n="p3s">«Настройки с ограниченным доступом»</span></div>
+        <div class="perm-do" data-i18n="p3d">Нажмите OK. В AdSkipper нажмите «Снять блокировку» → ⋮ → «Разрешить настройки с ограниченным доступом».</div>
+      </li>
+      <li class="perm">
+        <div class="perm-see"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg><span data-i18n="p4s">«Разрешить AdSkipper полный контроль над устройством?»</span></div>
+        <div class="perm-do" data-i18n="p4d">Нажмите «Разрешить». Так AdSkipper видит экран YouTube и нажимает «Пропустить». Никакие данные никуда не отправляются.</div>
+      </li>
+      <li class="perm">
+        <div class="perm-see"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg><span data-i18n="p5s">Сервис сам выключается (Xiaomi, Samsung, Huawei)</span></div>
+        <div class="perm-do" data-i18n="p5d">Настройки → Приложения → AdSkipper → Батарея → «Нет ограничений».</div>
+      </li>
+    </ol>
+  </section>
+
   <section class="notes">
     <h2 data-i18n="nt">Полезно знать</h2>
     <p data-i18n="n1">Только для Android. На iPhone такие приложения запрещены.</p>
@@ -331,6 +376,18 @@ const L = {
     n2: "Рекламу без кнопки «Пропустить» нельзя пропустить, но звук у неё будет выключен.",
     n3: "Работает с официальным приложением YouTube, не с сайтом в браузере.",
     n4: "Обновления ставятся поверх старой версии: приложение само покажет кнопку «Обновить», когда выйдет новая.",
+    pt_title: "Что нажимать, когда телефон спрашивает",
+    pt_sub: "Для приложений не из Google Play Android показывает несколько предупреждений. Это нормально — вот что нажимать.",
+    p1s: "«Установка неизвестных приложений» или красное окно «Danger» (Xiaomi)",
+    p1d: "Поставьте галочку «Я осознаю риски» и нажмите OK. Это нужно один раз — для браузера.",
+    p2s: "Play Protect: «Небезопасное приложение заблокировано»",
+    p2d: "Нажмите «Подробнее» → «Всё равно установить». Отправлять приложение на проверку не нужно.",
+    p3s: "«Настройки с ограниченным доступом»",
+    p3d: "Нажмите OK. В AdSkipper нажмите «Снять блокировку» → ⋮ → «Разрешить настройки с ограниченным доступом».",
+    p4s: "«Разрешить AdSkipper полный контроль над устройством?»",
+    p4d: "Нажмите «Разрешить». Так AdSkipper видит экран YouTube и нажимает «Пропустить». Никакие данные никуда не отправляются.",
+    p5s: "Сервис сам выключается (Xiaomi, Samsung, Huawei)",
+    p5d: "Настройки → Приложения → AdSkipper → Батарея → «Нет ограничений».",
     dls: "Скачиваний", foot: "Открытый исходный код" },
 
   en: { name: "English",
@@ -353,6 +410,18 @@ const L = {
     n2: "Ads with no “Skip” button can't be skipped, but they will be muted.",
     n3: "Works with the official YouTube app, not the website in a browser.",
     n4: "Updates install over the old version. The app shows an “Update” button when a new one is out.",
+    pt_title: "What to tap when your phone asks",
+    pt_sub: "Android shows a few warnings for apps from outside Google Play. That's normal. Here's what to tap.",
+    p1s: "“Install unknown apps” or a red “Danger” window (Xiaomi)",
+    p1d: "Tick “I'm aware of the risks” and tap OK. You only do this once, for your browser.",
+    p2s: "Play Protect: “Unsafe app blocked”",
+    p2d: "Tap “More details” → “Install anyway”. There's no need to send the app for scanning.",
+    p3s: "“Restricted setting”",
+    p3d: "Tap OK. In AdSkipper, tap “Unlock” → ⋮ → “Allow restricted settings”.",
+    p4s: "“Allow AdSkipper to have full control of your device?”",
+    p4d: "Tap “Allow”. This lets AdSkipper see the YouTube screen and tap “Skip”. Nothing is sent anywhere.",
+    p5s: "The service turns itself off (Xiaomi, Samsung, Huawei)",
+    p5d: "Settings → Apps → AdSkipper → Battery → “No restrictions”.",
     dls: "Downloads", foot: "Open source" },
 
   uk: { name: "Українська",
@@ -375,6 +444,18 @@ const L = {
     n2: "Рекламу без кнопки «Пропустити» пропустити не можна, але звук у неї буде вимкнено.",
     n3: "Працює з офіційним застосунком YouTube, а не з сайтом у браузері.",
     n4: "Оновлення встановлюються поверх старої версії: застосунок сам покаже кнопку «Оновити», коли вийде нова.",
+    pt_title: "Що натискати, коли телефон питає",
+    pt_sub: "Для застосунків не з Google Play Android показує кілька попереджень. Це нормально — ось що натискати.",
+    p1s: "«Встановлення невідомих застосунків» або червоне вікно «Danger» (Xiaomi)",
+    p1d: "Поставте галочку «Я усвідомлюю ризики» й натисніть OK. Це потрібно один раз — для браузера.",
+    p2s: "Play Protect: «Небезпечний застосунок заблоковано»",
+    p2d: "Натисніть «Докладніше» → «Усе одно встановити». Надсилати застосунок на перевірку не потрібно.",
+    p3s: "«Обмежені налаштування»",
+    p3d: "Натисніть OK. В AdSkipper натисніть «Зняти блокування» → ⋮ → «Дозволити обмежені налаштування».",
+    p4s: "«Надати AdSkipper повний контроль над пристроєм?»",
+    p4d: "Натисніть «Дозволити». Так AdSkipper бачить екран YouTube і натискає «Пропустити». Жодні дані нікуди не надсилаються.",
+    p5s: "Сервіс сам вимикається (Xiaomi, Samsung, Huawei)",
+    p5d: "Налаштування → Застосунки → AdSkipper → Акумулятор → «Без обмежень».",
     dls: "Завантажень", foot: "Відкритий код" },
 
   es: { name: "Español",
@@ -397,6 +478,18 @@ const L = {
     n2: "Los anuncios sin botón «Saltar» no se pueden saltar, pero se silencian.",
     n3: "Funciona con la app oficial de YouTube, no con la web en el navegador.",
     n4: "Las actualizaciones se instalan encima de la versión anterior. La app muestra un botón «Actualizar» cuando sale una nueva.",
+    pt_title: "Qué pulsar cuando el móvil pregunta",
+    pt_sub: "Android muestra varios avisos con las apps que no vienen de Google Play. Es normal: esto es lo que hay que pulsar.",
+    p1s: "«Instalar apps desconocidas» o una ventana roja «Danger» (Xiaomi)",
+    p1d: "Marca «Soy consciente de los riesgos» y pulsa OK. Solo una vez, para tu navegador.",
+    p2s: "Play Protect: «App no segura bloqueada»",
+    p2d: "Pulsa «Más detalles» → «Instalar de todas formas». No hace falta enviar la app a analizar.",
+    p3s: "«Ajuste restringido»",
+    p3d: "Pulsa OK. En AdSkipper pulsa «Desbloquear» → ⋮ → «Permitir ajustes restringidos».",
+    p4s: "«¿Permitir que AdSkipper tenga el control total del dispositivo?»",
+    p4d: "Pulsa «Permitir». Así AdSkipper ve la pantalla de YouTube y pulsa «Saltar». No se envía nada.",
+    p5s: "El servicio se apaga solo (Xiaomi, Samsung, Huawei)",
+    p5d: "Ajustes → Aplicaciones → AdSkipper → Batería → «Sin restricciones».",
     dls: "Descargas", foot: "Código abierto" },
 
   de: { name: "Deutsch",
@@ -419,6 +512,18 @@ const L = {
     n2: "Werbung ohne „Überspringen“-Button lässt sich nicht überspringen, wird aber stummgeschaltet.",
     n3: "Funktioniert mit der offiziellen YouTube-App, nicht mit der Website im Browser.",
     n4: "Updates werden über die alte Version installiert. Die App zeigt einen „Aktualisieren“-Button, sobald eine neue erscheint.",
+    pt_title: "Was du tippst, wenn das Handy fragt",
+    pt_sub: "Bei Apps außerhalb von Google Play zeigt Android mehrere Warnungen. Das ist normal – hier steht, was du tippst.",
+    p1s: "„Unbekannte Apps installieren“ oder ein rotes „Danger“-Fenster (Xiaomi)",
+    p1d: "Hake „Ich bin mir der Risiken bewusst“ an und tippe auf OK. Nur einmal, für deinen Browser.",
+    p2s: "Play Protect: „Unsichere App blockiert“",
+    p2d: "Tippe auf „Weitere Details“ → „Trotzdem installieren“. Die App musst du nicht zur Prüfung senden.",
+    p3s: "„Eingeschränkte Einstellung“",
+    p3d: "Tippe auf OK. Tippe in AdSkipper auf „Entsperren“ → ⋮ → „Eingeschränkte Einstellungen zulassen“.",
+    p4s: "„AdSkipper die volle Kontrolle über dein Gerät erlauben?“",
+    p4d: "Tippe auf „Zulassen“. So sieht AdSkipper den YouTube-Bildschirm und tippt auf „Überspringen“. Es werden keine Daten gesendet.",
+    p5s: "Der Dienst schaltet sich selbst ab (Xiaomi, Samsung, Huawei)",
+    p5d: "Einstellungen → Apps → AdSkipper → Akku → „Nicht eingeschränkt“.",
     dls: "Downloads", foot: "Open Source" },
 
   fr: { name: "Français",
@@ -441,6 +546,18 @@ const L = {
     n2: "Les pubs sans bouton « Passer » ne peuvent pas être passées, mais leur son est coupé.",
     n3: "Fonctionne avec l'app YouTube officielle, pas avec le site dans un navigateur.",
     n4: "Les mises à jour s'installent par-dessus l'ancienne version. L'app affiche un bouton « Mettre à jour » dès qu'une nouvelle sort.",
+    pt_title: "Quoi toucher quand le téléphone demande",
+    pt_sub: "Android affiche plusieurs avertissements pour les apps hors Google Play. C'est normal : voici quoi toucher.",
+    p1s: "« Installer des applis inconnues » ou une fenêtre rouge « Danger » (Xiaomi)",
+    p1d: "Cochez « Je suis conscient des risques » et appuyez sur OK. Une seule fois, pour votre navigateur.",
+    p2s: "Play Protect : « Application dangereuse bloquée »",
+    p2d: "Appuyez sur « Plus de détails » → « Installer quand même ». Inutile d'envoyer l'app pour analyse.",
+    p3s: "« Paramètre restreint »",
+    p3d: "Appuyez sur OK. Dans AdSkipper, appuyez sur « Débloquer » → ⋮ → « Autoriser les paramètres restreints ».",
+    p4s: "« Autoriser AdSkipper à contrôler entièrement votre appareil ? »",
+    p4d: "Appuyez sur « Autoriser ». C'est ainsi qu'AdSkipper voit l'écran de YouTube et appuie sur « Passer ». Rien n'est envoyé.",
+    p5s: "Le service se désactive tout seul (Xiaomi, Samsung, Huawei)",
+    p5d: "Paramètres → Applications → AdSkipper → Batterie → « Non restreinte ».",
     dls: "Téléchargements", foot: "Code source ouvert" },
 
   pt: { name: "Português",
@@ -463,6 +580,18 @@ const L = {
     n2: "Anúncios sem botão «Pular» não podem ser pulados, mas ficam sem som.",
     n3: "Funciona com o app oficial do YouTube, não com o site no navegador.",
     n4: "As atualizações são instaladas por cima da versão antiga. O app mostra um botão «Atualizar» quando sai uma nova.",
+    pt_title: "O que tocar quando o celular perguntar",
+    pt_sub: "O Android mostra alguns avisos para apps fora do Google Play. É normal — veja o que tocar.",
+    p1s: "«Instalar apps desconhecidos» ou uma janela vermelha «Danger» (Xiaomi)",
+    p1d: "Marque «Estou ciente dos riscos» e toque em OK. Só uma vez, para o seu navegador.",
+    p2s: "Play Protect: «App não seguro bloqueado»",
+    p2d: "Toque em «Mais detalhes» → «Instalar mesmo assim». Não precisa enviar o app para verificação.",
+    p3s: "«Configuração restrita»",
+    p3d: "Toque em OK. No AdSkipper, toque em «Desbloquear» → ⋮ → «Permitir configurações restritas».",
+    p4s: "«Permitir que o AdSkipper tenha controle total do dispositivo?»",
+    p4d: "Toque em «Permitir». Assim o AdSkipper vê a tela do YouTube e toca em «Pular». Nada é enviado.",
+    p5s: "O serviço desliga sozinho (Xiaomi, Samsung, Huawei)",
+    p5d: "Configurações → Apps → AdSkipper → Bateria → «Sem restrições».",
     dls: "Downloads", foot: "Código aberto" },
 
   tr: { name: "Türkçe",
@@ -485,6 +614,18 @@ const L = {
     n2: "«Atla» düğmesi olmayan reklamlar geçilemez, ancak sesleri kapatılır.",
     n3: "Resmi YouTube uygulamasıyla çalışır, tarayıcıdaki siteyle değil.",
     n4: "Güncellemeler eski sürümün üzerine kurulur. Yeni sürüm çıktığında uygulama «Güncelle» düğmesi gösterir.",
+    pt_title: "Telefon sorduğunda neye dokunmalı",
+    pt_sub: "Android, Google Play dışından gelen uygulamalar için birkaç uyarı gösterir. Bu normal — neye dokunacağınız burada.",
+    p1s: "«Bilinmeyen uygulamaları yükle» veya kırmızı «Danger» penceresi (Xiaomi)",
+    p1d: "«Risklerin farkındayım» kutusunu işaretleyip OK'e dokunun. Tarayıcınız için yalnızca bir kez.",
+    p2s: "Play Protect: «Güvenli olmayan uygulama engellendi»",
+    p2d: "«Diğer ayrıntılar» → «Yine de yükle»ye dokunun. Uygulamayı taramaya göndermeniz gerekmez.",
+    p3s: "«Kısıtlanmış ayar»",
+    p3d: "OK'e dokunun. AdSkipper'da «Kilidi aç» → ⋮ → «Kısıtlanmış ayarlara izin ver»e dokunun.",
+    p4s: "«AdSkipper'ın cihazınızı tamamen kontrol etmesine izin verilsin mi?»",
+    p4d: "«İzin ver»e dokunun. AdSkipper böylece YouTube ekranını görür ve «Atla»ya basar. Hiçbir veri gönderilmez.",
+    p5s: "Hizmet kendiliğinden kapanıyor (Xiaomi, Samsung, Huawei)",
+    p5d: "Ayarlar → Uygulamalar → AdSkipper → Pil → «Kısıtlama yok».",
     dls: "İndirme", foot: "Açık kaynak" },
 
   lv: { name: "Latviešu",
@@ -507,6 +648,18 @@ const L = {
     n2: "Reklāmas bez pogas “Izlaist” nevar izlaist, taču to skaņa tiks izslēgta.",
     n3: "Darbojas ar oficiālo YouTube lietotni, nevis ar vietni pārlūkā.",
     n4: "Atjauninājumi instalējas virs vecās versijas. Kad iznāk jauna, lietotne parāda pogu “Atjaunināt”.",
+    pt_title: "Ko spiest, kad tālrunis jautā",
+    pt_sub: "Lietotnēm ne no Google Play Android rāda vairākus brīdinājumus. Tas ir normāli — lūk, ko spiest.",
+    p1s: "“Instalēt nezināmas lietotnes” vai sarkans logs “Danger” (Xiaomi)",
+    p1d: "Atzīmējiet “Es apzinos riskus” un nospiediet OK. Tikai vienreiz — jūsu pārlūkam.",
+    p2s: "Play Protect: “Nedroša lietotne bloķēta”",
+    p2d: "Nospiediet “Sīkāka informācija” → “Tomēr instalēt”. Sūtīt lietotni pārbaudei nav nepieciešams.",
+    p3s: "“Ierobežots iestatījums”",
+    p3d: "Nospiediet OK. AdSkipper lietotnē nospiediet “Atbloķēt” → ⋮ → “Atļaut ierobežotos iestatījumus”.",
+    p4s: "“Vai atļaut AdSkipper pilnībā kontrolēt jūsu ierīci?”",
+    p4d: "Nospiediet “Atļaut”. Tā AdSkipper redz YouTube ekrānu un nospiež “Izlaist”. Nekādi dati netiek sūtīti.",
+    p5s: "Pakalpojums pats izslēdzas (Xiaomi, Samsung, Huawei)",
+    p5d: "Iestatījumi → Lietotnes → AdSkipper → Akumulators → “Bez ierobežojumiem”.",
     dls: "Lejupielādes", foot: "Atvērtais pirmkods" },
 
   lt: { name: "Lietuvių",
@@ -529,6 +682,18 @@ const L = {
     n2: "Reklamų be mygtuko „Praleisti“ praleisti negalima, bet jų garsas bus išjungtas.",
     n3: "Veikia su oficialia YouTube programėle, ne su svetaine naršyklėje.",
     n4: "Naujinimai diegiami ant senos versijos. Išėjus naujai, programėlė parodo mygtuką „Atnaujinti“.",
+    pt_title: "Ką spausti, kai telefonas klausia",
+    pt_sub: "Programoms ne iš Google Play Android rodo kelis įspėjimus. Tai normalu — štai ką spausti.",
+    p1s: "„Diegti nežinomas programas“ arba raudonas langas „Danger“ (Xiaomi)",
+    p1d: "Pažymėkite „Suprantu riziką“ ir paspauskite OK. Tik kartą — jūsų naršyklei.",
+    p2s: "Play Protect: „Nesaugi programa užblokuota“",
+    p2d: "Paspauskite „Daugiau informacijos“ → „Vis tiek įdiegti“. Siųsti programos patikrinti nereikia.",
+    p3s: "„Apribotas nustatymas“",
+    p3d: "Paspauskite OK. AdSkipper programoje paspauskite „Atrakinti“ → ⋮ → „Leisti apribotus nustatymus“.",
+    p4s: "„Leisti AdSkipper visiškai valdyti jūsų įrenginį?“",
+    p4d: "Paspauskite „Leisti“. Taip AdSkipper mato YouTube ekraną ir paspaudžia „Praleisti“. Jokie duomenys niekur nesiunčiami.",
+    p5s: "Paslauga pati išsijungia (Xiaomi, Samsung, Huawei)",
+    p5d: "Nustatymai → Programos → AdSkipper → Akumuliatorius → „Be apribojimų“.",
     dls: "Atsisiuntimai", foot: "Atvirasis kodas" },
 
   et: { name: "Eesti",
@@ -551,6 +716,18 @@ const L = {
     n2: "Ilma „Jäta vahele“ nuputa reklaame vahele jätta ei saa, kuid need vaigistatakse.",
     n3: "Töötab ametliku YouTube’i rakendusega, mitte brauseris avatud saidiga.",
     n4: "Uuendused paigalduvad vana versiooni peale. Kui ilmub uus, näitab rakendus nuppu „Uuenda“.",
+    pt_title: "Mida vajutada, kui telefon küsib",
+    pt_sub: "Väljastpoolt Google Playd tulevate rakenduste puhul näitab Android mitut hoiatust. See on normaalne — siin on, mida vajutada.",
+    p1s: "„Tundmatute rakenduste installimine“ või punane aken „Danger“ (Xiaomi)",
+    p1d: "Märkige „Olen riskidest teadlik“ ja vajutage OK. Ainult üks kord — teie brauserile.",
+    p2s: "Play Protect: „Ebaturvaline rakendus blokeeriti“",
+    p2d: "Vajutage „Rohkem üksikasju“ → „Installi ikkagi“. Rakendust pole vaja kontrolli saata.",
+    p3s: "„Piiratud seade“",
+    p3d: "Vajutage OK. Vajutage AdSkipperis „Ava lukk“ → ⋮ → „Luba piiratud seaded“.",
+    p4s: "„Kas lubada AdSkipperil teie seadet täielikult juhtida?“",
+    p4d: "Vajutage „Luba“. Nii näeb AdSkipper YouTube’i ekraani ja vajutab „Jäta vahele“. Andmeid ei saadeta kuhugi.",
+    p5s: "Teenus lülitub ise välja (Xiaomi, Samsung, Huawei)",
+    p5d: "Seaded → Rakendused → AdSkipper → Aku → „Piiranguteta“.",
     dls: "Allalaadimisi", foot: "Avatud lähtekood" },
 };
 
