@@ -18,10 +18,4 @@
     <string name="done_title">Усе працює</string>
     <string name="done_text">Реклама в YouTube тепер пропускається сама. Вмикати потрібно лише один раз: після перезавантаження й оновлень усе лишається увімкненим.</string>
     <string name="version">Версія %s</string>
-    <string name="bat_title">Не дозволяйте телефону вимикати AdSkipper</string>
-    <string name="bat_text">Телефон може зупиняти AdSkipper, щоб заощадити батарею. Натисніть кнопку й виберіть «Дозволити». На батарею це майже не впливає.</string>
-    <string name="bat_btn">Дозволити роботу у фоні</string>
-    <string name="broken_title">AdSkipper увімкнено, але він не працює</string>
-    <string name="broken_text">Так буває, коли телефон зупинив сервіс. Вимкніть перемикач AdSkipper і увімкніть його знову.</string>
-    <string name="broken_btn">Відкрити перемикач</string>
 </resources>

@@ -11,9 +11,6 @@ import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.PowerManager
 import android.provider.Settings
 import android.view.Gravity
 import android.view.View
@@ -56,13 +53,6 @@ class MainActivity : Activity() {
     private val dp by lazy { resources.displayMetrics.density }
     private lateinit var root: LinearLayout
     private var updateVersion: String? = null
-    private val handler = Handler(Looper.getMainLooper())
-    private var looksBroken = false
-
-    override fun onPause() {
-        super.onPause()
-        handler.removeCallbacksAndMessages(null)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,25 +102,7 @@ class MainActivity : Activity() {
             root.addView(space(16))
         }
 
-        // «Включён, но не работает»: переключатель в настройках включён, а сервис не запущен.
-        // Сразу после запуска приложения сервис может подключаться ещё секунду — поэтому
-        // смотрим ещё раз через 1,5 с и только тогда показываем предупреждение.
-        if (!on || SkipAdService.isRunning) looksBroken = false
-        if (on && !SkipAdService.isRunning && !looksBroken) {
-            handler.removeCallbacksAndMessages(null)
-            handler.postDelayed({
-                if (!isFinishing && isServiceEnabled() && !SkipAdService.isRunning) {
-                    looksBroken = true
-                    render()
-                }
-            }, 1500)
-        }
-
-        when {
-            !on -> renderSteps()
-            looksBroken -> renderBroken()
-            else -> renderDone()
-        }
+        if (on) renderDone() else renderSteps()
 
         root.addView(space(24))
         root.addView(Switch(this).apply {
@@ -171,40 +143,6 @@ class MainActivity : Activity() {
             addView(space(8))
             addView(text(getString(R.string.done_text), 16f, MUTED).apply { gravity = Gravity.CENTER })
         })
-
-        // Телефон может «экономить батарею» и останавливать сервис — просим исключение.
-        if (!batteryUnrestricted()) {
-            root.addView(space(12))
-            root.addView(step(0, getString(R.string.bat_title), getString(R.string.bat_text),
-                getString(R.string.bat_btn), active = true, done = false) { requestBatteryException() })
-        }
-    }
-
-    private fun renderBroken() {
-        root.addView(step(0, getString(R.string.broken_title), getString(R.string.broken_text),
-            getString(R.string.broken_btn), active = true, done = false) {
-            prefs.edit().putBoolean(PREF_AWAITING, true).apply()
-            openServiceSettings()
-        })
-    }
-
-    private fun batteryUnrestricted(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
-        return getSystemService(PowerManager::class.java).isIgnoringBatteryOptimizations(packageName)
-    }
-
-    /** Системное окно «Разрешить приложению работать в фоне?»; если его нет — общий список. */
-    @Suppress("BatteryLife")
-    private fun requestBatteryException() {
-        try {
-            startActivity(Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:$packageName")))
-        } catch (e: Exception) {
-            try {
-                startActivity(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
-            } catch (e2: Exception) {
-                openAppInfo()
-            }
-        }
     }
 
     private fun renderSteps() {

@@ -18,10 +18,4 @@
     <string name="done_title">Tudo funcionando</string>
     <string name="done_text">Os anúncios do YouTube agora são pulados sozinhos. Só precisa fazer isso uma vez: continua ativo depois de reiniciar e atualizar.</string>
     <string name="version">Versão %s</string>
-    <string name="bat_title">Não deixe o celular desligar o AdSkipper</string>
-    <string name="bat_text">O celular pode parar o AdSkipper para economizar bateria. Toque no botão e escolha «Permitir». Quase não afeta a bateria.</string>
-    <string name="bat_btn">Permitir em segundo plano</string>
-    <string name="broken_title">O AdSkipper está ativado, mas não funciona</string>
-    <string name="broken_text">Isso acontece quando o celular para o serviço. Desligue a chave do AdSkipper e ligue de novo.</string>
-    <string name="broken_btn">Abrir a chave</string>
 </resources>

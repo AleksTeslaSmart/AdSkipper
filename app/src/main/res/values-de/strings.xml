@@ -18,10 +18,4 @@
     <string name="done_title">Alles läuft</string>
     <string name="done_text">YouTube-Werbung wird jetzt automatisch übersprungen. Das musst du nur einmal machen: Es bleibt nach Neustarts und Updates an.</string>
     <string name="version">Version %s</string>
-    <string name="bat_title">Lass das Handy AdSkipper nicht abschalten</string>
-    <string name="bat_text">Das Handy kann AdSkipper stoppen, um Akku zu sparen. Tippe auf den Button und wähle „Zulassen“. Der Akku merkt davon kaum etwas.</string>
-    <string name="bat_btn">Hintergrund erlauben</string>
-    <string name="broken_title">AdSkipper ist an, funktioniert aber nicht</string>
-    <string name="broken_text">Das passiert, wenn das Handy den Dienst gestoppt hat. Schalte AdSkipper aus und wieder ein.</string>
-    <string name="broken_btn">Schalter öffnen</string>
 </resources>

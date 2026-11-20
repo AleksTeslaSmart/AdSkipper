@@ -20,10 +20,4 @@
     <string name="done_title">Everything works</string>
     <string name="done_text">YouTube ads will now be skipped automatically. You only need to do this once: it stays on after restarts and updates.</string>
     <string name="version">Version %s</string>
-    <string name="bat_title">Don’t let your phone turn off AdSkipper</string>
-    <string name="bat_text">Your phone may stop AdSkipper to save battery. Tap the button and choose “Allow”. It barely affects battery life.</string>
-    <string name="bat_btn">Allow background work</string>
-    <string name="broken_title">AdSkipper is on but not working</string>
-    <string name="broken_text">This happens when the phone has stopped the service. Turn the AdSkipper switch off and on again.</string>
-    <string name="broken_btn">Open the switch</string>
 </resources>

@@ -18,10 +18,4 @@
     <string name="done_title">Tout fonctionne</string>
     <string name="done_text">Les pubs YouTube sont maintenant passées automatiquement. À faire une seule fois : cela reste actif après un redémarrage ou une mise à jour.</string>
     <string name="version">Version %s</string>
-    <string name="bat_title">Empêchez le téléphone de couper AdSkipper</string>
-    <string name="bat_text">Le téléphone peut arrêter AdSkipper pour économiser la batterie. Appuyez sur le bouton et choisissez « Autoriser ». L’impact sur la batterie est minime.</string>
-    <string name="bat_btn">Autoriser en arrière-plan</string>
-    <string name="broken_title">AdSkipper est activé mais ne fonctionne pas</string>
-    <string name="broken_text">Cela arrive quand le téléphone a arrêté le service. Désactivez l’interrupteur AdSkipper, puis réactivez-le.</string>
-    <string name="broken_btn">Ouvrir l’interrupteur</string>
 </resources>

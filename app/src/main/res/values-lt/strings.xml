@@ -18,10 +18,4 @@
     <string name="done_title">Viskas veikia</string>
     <string name="done_text">YouTube reklamos dabar praleidžiamos automatiškai. Tai reikia padaryti tik kartą: po perkrovimo ir atnaujinimų lieka įjungta.</string>
     <string name="version">Versija %s</string>
-    <string name="bat_title">Neleiskite telefonui išjungti AdSkipper</string>
-    <string name="bat_text">Telefonas gali sustabdyti AdSkipper, kad taupytų akumuliatorių. Paspauskite mygtuką ir pasirinkite „Leisti“. Akumuliatoriui tai beveik neturi įtakos.</string>
-    <string name="bat_btn">Leisti veikti fone</string>
-    <string name="broken_title">AdSkipper įjungtas, bet neveikia</string>
-    <string name="broken_text">Taip nutinka, kai telefonas sustabdo paslaugą. Išjunkite AdSkipper jungiklį ir vėl jį įjunkite.</string>
-    <string name="broken_btn">Atidaryti jungiklį</string>
 </resources>
