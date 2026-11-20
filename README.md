@@ -44,6 +44,10 @@ gradle assembleDebug
 
 Releases are built and signed by GitHub Actions ([build.yml](.github/workflows/build.yml)).
 
+## License
+
+[GPL-3.0](LICENSE). You may use, change and share AdSkipper; copies and modified versions must stay open source under the same license.
+
 ---
 
 ### Русский
