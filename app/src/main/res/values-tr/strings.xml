@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_name">AdSkipper — YouTube reklamlarını atla</string>
+    <string name="service_description">YouTube uygulamasında «Atla» düğmesine otomatik olarak dokunur ve isterseniz reklam sırasında sesi kapatır. Hizmet yalnızca YouTube pencerelerini görür ve hiçbir yere veri göndermez.</string>
+    <string name="status_on">✅ Hizmet açık</string>
+    <string name="status_off">❌ Hizmet kapalı</string>
+    <string name="btn_enable">Hizmeti aç</string>
+    <string name="btn_settings">Erişilebilirlik ayarlarını aç</string>
+    <string name="mute_ads">Reklam sırasında sesi kapat</string>
+    <string name="skipped_count">Atlanan reklam: %d</string>
+    <string name="btn_update">%s sürümüne güncelle</string>
+    <string name="help">Nasıl açılır:\n1. Yukarıdaki düğmeye dokunun.\n2. AdSkipper’ı «İndirilen uygulamalar» veya «Yüklü hizmetler» bölümünde bulun.\n3. Anahtarı açın ve onaylayın.\n\nAnahtar griyse (Android 13+): Ayarlar → Uygulamalar → AdSkipper → ⋮ (sağ üst) → «Kısıtlanmış ayarlara izin ver», sonra tekrar deneyin.</string>
+</resources>

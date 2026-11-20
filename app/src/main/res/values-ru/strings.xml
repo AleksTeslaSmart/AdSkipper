@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_name">AdSkipper — пропуск рекламы YouTube</string>
+    <string name="service_description">Автоматически нажимает «Пропустить» в приложении YouTube и (по желанию) выключает звук во время рекламы. Сервис видит только окна YouTube и никуда не передаёт данные.</string>
+    <string name="status_on">✅ Сервис включён</string>
+    <string name="status_off">❌ Сервис выключен</string>
+    <string name="btn_enable">Включить сервис</string>
+    <string name="btn_settings">Открыть настройки специальных возможностей</string>
+    <string name="mute_ads">Выключать звук во время рекламы</string>
+    <string name="skipped_count">Пропущено реклам: %d</string>
+    <string name="btn_update">Обновить до версии %s</string>
+    <string name="help">Как включить:\n1. Нажмите кнопку выше.\n2. Найдите AdSkipper в разделе «Скачанные приложения» или «Установленные службы».\n3. Включите переключатель и подтвердите.\n\nЕсли переключатель серый (Android 13+): Настройки → Приложения → AdSkipper → ⋮ (вверху справа) → «Разрешить ограниченные настройки», затем повторите.</string>
+</resources>

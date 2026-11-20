@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_name">AdSkipper — YouTube reklāmu izlaišana</string>
+    <string name="service_description">Automātiski nospiež “Izlaist” lietotnē YouTube un, ja vēlaties, izslēdz skaņu reklāmu laikā. Pakalpojums redz tikai YouTube logus un nekur nesūta datus.</string>
+    <string name="status_on">✅ Pakalpojums ieslēgts</string>
+    <string name="status_off">❌ Pakalpojums izslēgts</string>
+    <string name="btn_enable">Ieslēgt pakalpojumu</string>
+    <string name="btn_settings">Atvērt pieejamības iestatījumus</string>
+    <string name="mute_ads">Izslēgt skaņu reklāmu laikā</string>
+    <string name="skipped_count">Izlaistas reklāmas: %d</string>
+    <string name="btn_update">Atjaunināt uz versiju %s</string>
+    <string name="help">Kā ieslēgt:\n1. Nospiediet pogu augstāk.\n2. Atrodiet AdSkipper sadaļā “Lejupielādētās lietotnes” vai “Instalētie pakalpojumi”.\n3. Ieslēdziet slēdzi un apstipriniet.\n\nJa slēdzis ir pelēks (Android 13+): Iestatījumi → Lietotnes → AdSkipper → ⋮ (augšā pa labi) → “Atļaut ierobežotos iestatījumus”, tad mēģiniet vēlreiz.</string>
+</resources>

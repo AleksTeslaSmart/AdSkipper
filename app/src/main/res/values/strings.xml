@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- English (default for any language without its own folder) -->
 <resources>
-    <string name="app_name">AdSkipper</string>
-    <string name="service_name">AdSkipper — пропуск рекламы YouTube</string>
-    <string name="service_description">Автоматически нажимает кнопку «Пропустить» в приложении YouTube и (по желанию) выключает звук во время рекламы. Сервис видит только окна приложения YouTube и никуда не передаёт данные.</string>
+    <string name="app_name" translatable="false">AdSkipper</string>
+    <string name="service_name">AdSkipper — YouTube ad skipping</string>
+    <string name="service_description">Automatically taps “Skip” in the YouTube app and, if you want, mutes the sound during ads. The service sees only YouTube windows and sends no data anywhere.</string>
+    <string name="status_on">✅ Service is on</string>
+    <string name="status_off">❌ Service is off</string>
+    <string name="btn_enable">Turn on service</string>
+    <string name="btn_settings">Open accessibility settings</string>
+    <string name="mute_ads">Mute sound during ads</string>
+    <string name="skipped_count">Ads skipped: %d</string>
+    <string name="btn_update">Update to version %s</string>
+    <string name="help">How to turn it on:\n1. Tap the button above.\n2. Find AdSkipper under “Downloaded apps” or “Installed services”.\n3. Turn the switch on and confirm.\n\nIf the switch is greyed out (Android 13+): Settings → Apps → AdSkipper → ⋮ (top right) → Allow restricted settings, then try again.</string>
 </resources>

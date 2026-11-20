@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_name">AdSkipper — saltar anuncios de YouTube</string>
+    <string name="service_description">Pulsa «Saltar» automáticamente en la app de YouTube y, si quieres, silencia el sonido durante los anuncios. El servicio solo ve las ventanas de YouTube y no envía datos a ningún sitio.</string>
+    <string name="status_on">✅ Servicio activado</string>
+    <string name="status_off">❌ Servicio desactivado</string>
+    <string name="btn_enable">Activar servicio</string>
+    <string name="btn_settings">Abrir ajustes de accesibilidad</string>
+    <string name="mute_ads">Silenciar durante los anuncios</string>
+    <string name="skipped_count">Anuncios saltados: %d</string>
+    <string name="btn_update">Actualizar a la versión %s</string>
+    <string name="help">Cómo activarlo:\n1. Pulsa el botón de arriba.\n2. Busca AdSkipper en «Aplicaciones descargadas» o «Servicios instalados».\n3. Activa el interruptor y confirma.\n\nSi el interruptor está gris (Android 13+): Ajustes → Aplicaciones → AdSkipper → ⋮ (arriba a la derecha) → «Permitir ajustes restringidos» y vuelve a intentarlo.</string>
+</resources>

@@ -1,11 +1,16 @@
 # Собирает APK на серверах GitHub и выкладывает его в Releases.
 # Постоянная ссылка для телефона:
-#   https://github.com/<ваш-логин>/AdSkipper/releases/latest/download/AdSkipper.apk
+#   https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk
+#
+# Нужны секреты репозитория (Settings → Secrets and variables → Actions):
+#   SIGNING_KEYSTORE — ключ подписи в base64
+#   SIGNING_PASSWORD — пароль ключа
 name: Build APK
 
 on:
   push:
     branches: [main]
+    paths-ignore: ["site/**", "README.md"]
   workflow_dispatch:
 
 permissions:
@@ -26,7 +31,21 @@ jobs:
         with:
           gradle-version: 8.10.2
 
+      - name: Check signing key
+        env:
+          SIGNING_KEYSTORE: ${{ secrets.SIGNING_KEYSTORE }}
+        run: |
+          if [ -z "$SIGNING_KEYSTORE" ]; then
+            echo "::error::Secret SIGNING_KEYSTORE is missing. Without a permanent key, updates won't install over the old version."
+            exit 1
+          fi
+          echo "$SIGNING_KEYSTORE" | base64 -d > "$RUNNER_TEMP/adskipper.p12"
+
       - name: Build
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+          SIGNING_KEYSTORE_PATH: ${{ runner.temp }}/adskipper.p12
+          SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         run: gradle assembleRelease
 
       - name: Rename

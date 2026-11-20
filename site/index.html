@@ -1,0 +1,622 @@
+<title>AdSkipper</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: two columns on wide screens — pitch + download on the left, a looping "skip ad" player on the right; one column on phones with the button first. */
+:root {
+  --paper: #F3F4F8;
+  --ink: #12141C;
+  --muted: #5A6072;
+  --line: #DADDE7;
+  --card: #FFFFFF;
+  --accent: #F2541B;
+  --accent-ink: #FFFFFF;
+  --screen: #181A22;
+  --screen-ink: #F3F4F8;
+  --font-display: "Unbounded", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1016; --ink: #ECEEF4; --muted: #9AA0B3; --line: #262A37;
+    --card: #161922; --accent: #FF6A33; --accent-ink: #14100E;
+    --screen: #050608; --screen-ink: #ECEEF4; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1016; --ink: #ECEEF4; --muted: #9AA0B3; --line: #262A37;
+  --card: #161922; --accent: #FF6A33; --accent-ink: #14100E;
+  --screen: #050608; --screen-ink: #ECEEF4; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding-block: 20px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+/* top bar */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+.brand-mark { width: 30px; height: 30px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; }
+.brand-mark svg { width: 16px; height: 16px; fill: currentColor; }
+.lang { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 0.875rem; }
+.lang select {
+  font: inherit; color: var(--ink); background: var(--card);
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 30px 6px 12px;
+  appearance: none; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 16px) 55%, calc(100% - 11px) 55%;
+  background-size: 5px 5px; background-repeat: no-repeat;
+}
+.lang select:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+.hero-text { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+h1 {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(2rem, 5.2vw, 3.4rem); line-height: 1.05; letter-spacing: -0.03em;
+  margin: 0; text-wrap: balance;
+}
+h1 em { font-style: normal; color: var(--accent); }
+.lead { font-size: 1.125rem; color: var(--muted); margin: 0; max-width: 34em; }
+
+.cta { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.download {
+  display: inline-flex; align-items: center; gap: 14px;
+  background: var(--accent); color: var(--accent-ink);
+  text-decoration: none; font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.1rem, 2.4vw, 1.35rem); letter-spacing: -0.01em;
+  padding: 20px 34px; border-radius: 16px;
+  box-shadow: 0 10px 28px -10px color-mix(in srgb, var(--accent) 70%, transparent);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.download:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -12px color-mix(in srgb, var(--accent) 80%, transparent); }
+.download:active { transform: translateY(0); }
+.download svg { width: 24px; height: 24px; fill: currentColor; flex: none; }
+.meta { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 14px; }
+.meta span + span::before { content: "·"; margin-right: 14px; color: var(--line); }
+
+/* player mock */
+.player { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.screen {
+  position: relative; aspect-ratio: 16 / 9; max-width: 100%;
+  border-radius: 18px; overflow: hidden; background: var(--screen); color: var(--screen-ink);
+  box-shadow: 0 30px 60px -30px rgba(10, 12, 20, .55);
+}
+.scene { position: absolute; inset: 0; display: grid; place-items: center; transition: opacity .35s ease; }
+.scene-ad { background: radial-gradient(120% 90% at 20% 10%, #3A2F6B 0%, #1C1A33 55%, #12121C 100%); }
+.scene-ad .ad-copy { font-family: var(--font-display); font-weight: 700; font-size: clamp(1rem, 3vw, 1.5rem); opacity: .55; letter-spacing: -0.02em; }
+.scene-video { background: radial-gradient(120% 90% at 80% 20%, #1F4D5A 0%, #12303A 50%, #0B161B 100%); opacity: 0; }
+.scene-video .play { width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,.14); display: grid; place-items: center; }
+.scene-video .play svg { width: 22px; height: 22px; fill: #fff; margin-left: 3px; }
+.badge {
+  position: absolute; left: 14px; bottom: 16px;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  background: #F5C518; color: #14120A; padding: 3px 8px; border-radius: 4px; font-weight: 500;
+}
+.skip {
+  position: absolute; right: 0; bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(0,0,0,.62); border: 1px solid rgba(255,255,255,.25); border-right: 0;
+  color: #fff; font-family: var(--font-body); font-weight: 700; font-size: 0.9rem;
+  padding: 9px 14px 9px 16px; border-radius: 20px 0 0 20px;
+  transition: background .15s ease, transform .15s ease;
+}
+.skip svg { width: 14px; height: 14px; fill: currentColor; }
+.skip .count { font-family: var(--font-mono); font-weight: 500; opacity: .8; }
+.skip.ready { background: rgba(0,0,0,.78); }
+.skip.tapped { background: var(--accent); color: var(--accent-ink); transform: scale(.96); }
+.tap {
+  position: absolute; width: 44px; height: 44px; border-radius: 50%;
+  border: 2px solid #fff; right: 40px; bottom: 12px; opacity: 0; pointer-events: none;
+}
+.tap.on { animation: ripple .5s ease-out; }
+@keyframes ripple { from { opacity: .9; transform: scale(.4); } to { opacity: 0; transform: scale(1.4); } }
+.progress { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255,255,255,.18); }
+.progress i { display: block; height: 100%; width: 0; background: #F5C518; transition: width .2s linear; }
+.caption { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.caption b { color: var(--ink); font-weight: 500; }
+
+/* features */
+.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; border-top: 1px solid var(--line); padding-top: 36px; }
+.feature { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.feature .ico { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); }
+.feature .ico svg { width: 20px; height: 20px; fill: currentColor; }
+h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.05rem; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+.feature p { margin: 0; color: var(--muted); }
+
+/* install */
+.install { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 40px; align-items: start; }
+.install-head { display: flex; flex-direction: column; gap: 12px; }
+.install-head h2 { font-size: clamp(1.3rem, 3vw, 1.75rem); font-weight: 700; letter-spacing: -0.02em; }
+.install-head p { margin: 0; color: var(--muted); }
+.qr { display: flex; align-items: center; gap: 16px; margin-top: 8px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); max-width: 340px; }
+.qr-box { width: 104px; height: 104px; flex: none; background: #fff; padding: 6px; border-radius: 8px; }
+.qr-box img, .qr-box canvas { width: 100% !important; height: 100% !important; display: block; }
+.qr p { font-size: 0.875rem; }
+ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; counter-reset: s; }
+ol.steps li {
+  counter-increment: s; display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 14px;
+  padding: 16px 0; border-bottom: 1px solid var(--line);
+}
+ol.steps li:first-child { border-top: 1px solid var(--line); }
+ol.steps li::before {
+  content: counter(s); font-family: var(--font-mono); font-size: 0.85rem;
+  width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line);
+  display: grid; place-items: center; color: var(--muted);
+}
+ol.steps b { display: block; font-weight: 700; margin-bottom: 2px; }
+ol.steps span { color: var(--muted); }
+.path { font-family: var(--font-mono); font-size: 0.85em; color: var(--ink); background: color-mix(in srgb, var(--line) 60%, transparent); padding: 1px 6px; border-radius: 4px; }
+
+/* notes */
+.notes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 40px; padding: 24px; border-radius: 16px; background: var(--card); border: 1px solid var(--line); }
+.notes h2 { grid-column: 1 / -1; font-size: 0.78rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 500; }
+.notes p { margin: 0; display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; }
+.notes p::before { content: "—"; color: var(--accent); }
+
+footer { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--muted); font-size: 0.875rem; }
+footer a { color: var(--ink); }
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .install { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .features { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .notes { grid-template-columns: minmax(0, 1fr); }
+  .qr { display: none; }
+}
+@media (max-width: 480px) {
+  .wrap { gap: 40px; }
+  .download { width: 100%; justify-content: center; padding: 20px 20px; }
+  .cta { align-items: stretch; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5l8 7-8 7V5zm9 0l8 7-8 7V5z"/></svg></span>
+      AdSkipper
+    </div>
+    <label class="lang" for="lang-select">
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.9 6h-2.9a15.7 15.7 0 00-1.4-3.6A8 8 0 0118.9 8zM12 4c.8 1.2 1.5 2.5 1.9 4h-3.8c.4-1.5 1.1-2.8 1.9-4zM4.3 14a8.2 8.2 0 010-4h3.4a16.5 16.5 0 000 4H4.3zm.8 2h2.9c.3 1.3.8 2.5 1.4 3.6A8 8 0 015.1 16zM8 8H5.1a8 8 0 014.3-3.6C8.8 5.5 8.3 6.7 8 8zm4 12c-.8-1.2-1.5-2.5-1.9-4h3.8c-.4 1.5-1.1 2.8-1.9 4zm2.3-6H9.7a14.7 14.7 0 010-4h4.6a14.7 14.7 0 010 4zm.3 5.6c.6-1.1 1.1-2.3 1.4-3.6h2.9a8 8 0 01-4.3 3.6zm1.7-5.6a16.5 16.5 0 000-4h3.4a8.2 8.2 0 010 4h-3.4z"/></svg>
+      <select id="lang-select" aria-label="Language"></select>
+    </label>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <div class="eyebrow" data-i18n="eyebrow">Android · YouTube</div>
+      <h1 data-i18n-html="title">Реклама в YouTube <em>пропускается сама</em></h1>
+      <p class="lead" data-i18n="lead">AdSkipper нажимает кнопку «Пропустить» за вас, как только она появляется, и выключает звук, пока идёт реклама.</p>
+      <div class="cta">
+        <a class="download" id="download" href="https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16l-5.7-5.7 1.4-1.4 3.3 3.3V3zM5 19h14v2H5v-2z"/></svg>
+          <span data-i18n="download">Скачать APK</span>
+        </a>
+        <div class="meta">
+          <span data-i18n="req">Android 7.0+</span>
+          <span data-i18n="size">620 КБ</span>
+          <span data-i18n="free">Бесплатно</span>
+          <span id="dl-count" hidden></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="player" aria-hidden="true">
+      <div class="screen">
+        <div class="scene scene-ad" id="scene-ad"><div class="ad-copy" data-i18n="adcopy">Реклама</div></div>
+        <div class="scene scene-video" id="scene-video"><div class="play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></div></div>
+        <div class="badge" id="badge"><span data-i18n="ad">Реклама</span> · <span id="badge-time">0:15</span></div>
+        <div class="skip" id="skip"><span id="skip-label"><span class="count" id="skip-count">5</span></span></div>
+        <div class="tap" id="tap"></div>
+        <div class="progress"><i id="bar"></i></div>
+      </div>
+      <div class="caption"><span data-i18n="cap1">Так это выглядит в YouTube</span><span><b id="saved">0</b> <span data-i18n="cap2">сек сэкономлено</span></span></div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 5l8 7-8 7V5zm10 0h2v14h-2zm4 0h2v14h-2z"/></svg></div>
+      <h2 data-i18n="f1t">Жмёт «Пропустить» сам</h2>
+      <p data-i18n="f1">Кнопка нажимается сразу, как только станет активной. Ничего трогать не нужно.</p>
+    </div>
+    <div class="feature">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.6 3l2.7-2.7-1.4-1.4-2.7 2.7-2.7-2.7-1.4 1.4 2.7 2.7-2.7 2.7 1.4 1.4 2.7-2.7 2.7 2.7 1.4-1.4z"/></svg></div>
+      <h2 data-i18n="f2t">Выключает звук рекламы</h2>
+      <p data-i18n="f2">Пока идёт реклама, звук выключен. Видео начинается — звук возвращается. Можно отключить в настройках.</p>
+    </div>
+    <div class="feature">
+      <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5l8-3zm-1 13.4l6-6-1.4-1.4-4.6 4.6-2.1-2.1L7.5 12l3.5 3.4z"/></svg></div>
+      <h2 data-i18n="f3t">Видит только YouTube</h2>
+      <p data-i18n="f3">Работает только внутри приложения YouTube и ничего никуда не отправляет. В интернет выходит, только чтобы проверить обновления.</p>
+    </div>
+  </section>
+
+  <section class="install">
+    <div class="install-head">
+      <h2 data-i18n="it">Как установить</h2>
+      <p data-i18n="isub">Около минуты. Приложение ставится из файла, не из Google Play.</p>
+      <div class="qr">
+        <div class="qr-box" id="qr"></div>
+        <p data-i18n="qr">Наведите камеру телефона, чтобы скачать.</p>
+      </div>
+    </div>
+    <ol class="steps">
+      <li><div><b data-i18n="s1t">Скачайте и откройте файл</b><span data-i18n="s1">Нажмите «Скачать APK», затем откройте AdSkipper.apk из уведомления или папки «Загрузки».</span></div></li>
+      <li><div><b data-i18n="s2t">Разрешите установку</b><span data-i18n="s2">Телефон спросит, можно ли ставить приложения из браузера, — разрешите. Если Play Protect предупредит, нажмите «Всё равно установить».</span></div></li>
+      <li><div><b data-i18n="s3t">Включите сервис</b><span data-i18n="s3">Откройте AdSkipper, нажмите большую кнопку и включите AdSkipper в разделе «Специальные возможности».</span></div></li>
+      <li><div><b data-i18n="s4t">Если переключатель серый</b><span data-i18n-html="s4">На Android 13 и новее: <span class="path">Настройки → Приложения → AdSkipper → ⋮ → Разрешить ограниченные настройки</span>, затем повторите шаг 3.</span></div></li>
+    </ol>
+  </section>
+
+  <section class="notes">
+    <h2 data-i18n="nt">Полезно знать</h2>
+    <p data-i18n="n1">Только для Android. На iPhone такие приложения запрещены.</p>
+    <p data-i18n="n2">Рекламу без кнопки «Пропустить» нельзя пропустить, но звук у неё будет выключен.</p>
+    <p data-i18n="n3">Работает с официальным приложением YouTube, не с сайтом в браузере.</p>
+    <p data-i18n="n4">Обновления ставятся поверх старой версии: приложение само покажет кнопку «Обновить», когда выйдет новая.</p>
+  </section>
+
+  <footer>
+    <span data-i18n="foot">Открытый исходный код</span>
+    <a href="https://github.com/AleksTeslaSmart/AdSkipper" target="_blank" rel="noopener">github.com/AleksTeslaSmart/AdSkipper</a>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const APK = "https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk";
+
+/* Download counter. The number comes from GitHub (download count of every APK
+   in every release) and is filled in here. It stays hidden until SHOW_FROM. */
+const DOWNLOADS = 0;
+const SHOW_FROM = 10000;
+
+const L = {
+  ru: { name: "Русский",
+    title: "Реклама в YouTube <em>пропускается сама</em>",
+    lead: "AdSkipper нажимает кнопку «Пропустить» за вас, как только она появляется, и выключает звук, пока идёт реклама.",
+    download: "Скачать APK", size: "620 КБ", free: "Бесплатно",
+    ad: "Реклама", adcopy: "Реклама", skip: "Пропустить",
+    cap1: "Так это выглядит в YouTube", cap2: "сек сэкономлено",
+    f1t: "Жмёт «Пропустить» сам", f1: "Кнопка нажимается сразу, как только станет активной. Ничего трогать не нужно.",
+    f2t: "Выключает звук рекламы", f2: "Пока идёт реклама, звук выключен. Видео начинается — звук возвращается. Можно отключить в настройках.",
+    f3t: "Видит только YouTube", f3: "Работает только внутри приложения YouTube и ничего никуда не отправляет. В интернет выходит, только чтобы проверить обновления.",
+    it: "Как установить", isub: "Около минуты. Приложение ставится из файла, не из Google Play.",
+    qr: "Наведите камеру телефона, чтобы скачать.",
+    s1t: "Скачайте и откройте файл", s1: "Нажмите «Скачать APK», затем откройте AdSkipper.apk из уведомления или папки «Загрузки».",
+    s2t: "Разрешите установку", s2: "Телефон спросит, можно ли ставить приложения из браузера, — разрешите. Если Play Protect предупредит, нажмите «Всё равно установить».",
+    s3t: "Включите сервис", s3: "Откройте AdSkipper, нажмите большую кнопку и включите AdSkipper в разделе «Специальные возможности».",
+    s4t: "Если переключатель серый", s4: "На Android 13 и новее: <span class=\"path\">Настройки → Приложения → AdSkipper → ⋮ → Разрешить ограниченные настройки</span>, затем повторите шаг 3.",
+    nt: "Полезно знать",
+    n1: "Только для Android. На iPhone такие приложения запрещены.",
+    n2: "Рекламу без кнопки «Пропустить» нельзя пропустить, но звук у неё будет выключен.",
+    n3: "Работает с официальным приложением YouTube, не с сайтом в браузере.",
+    n4: "Обновления ставятся поверх старой версии: приложение само покажет кнопку «Обновить», когда выйдет новая.",
+    dls: "Скачиваний", foot: "Открытый исходный код" },
+
+  en: { name: "English",
+    title: "YouTube ads <em>skip themselves</em>",
+    lead: "AdSkipper taps “Skip” for you the moment it appears, and mutes the sound while an ad is playing.",
+    download: "Download APK", size: "620 KB", free: "Free",
+    ad: "Ad", adcopy: "Advertisement", skip: "Skip",
+    cap1: "What it looks like in YouTube", cap2: "sec saved",
+    f1t: "Taps “Skip” for you", f1: "The button is pressed as soon as it becomes active. You don't touch anything.",
+    f2t: "Mutes ads", f2: "Sound is off while the ad plays and comes back when your video starts. You can turn this off.",
+    f3t: "Sees only YouTube", f3: "Works only inside the YouTube app and sends nothing anywhere. It goes online only to check for updates.",
+    it: "How to install", isub: "Takes about a minute. The app installs from a file, not from Google Play.",
+    qr: "Point your phone camera here to download.",
+    s1t: "Download and open the file", s1: "Tap “Download APK”, then open AdSkipper.apk from the notification or your Downloads folder.",
+    s2t: "Allow the install", s2: "Your phone will ask whether apps can be installed from the browser. Allow it. If Play Protect warns you, tap “Install anyway”.",
+    s3t: "Turn on the service", s3: "Open AdSkipper, tap the big button, and switch AdSkipper on under Accessibility.",
+    s4t: "If the switch is greyed out", s4: "On Android 13 and newer: <span class=\"path\">Settings → Apps → AdSkipper → ⋮ → Allow restricted settings</span>, then repeat step 3.",
+    nt: "Good to know",
+    n1: "Android only. Apps like this aren't allowed on iPhone.",
+    n2: "Ads with no “Skip” button can't be skipped, but they will be muted.",
+    n3: "Works with the official YouTube app, not the website in a browser.",
+    n4: "Updates install over the old version. The app shows an “Update” button when a new one is out.",
+    dls: "Downloads", foot: "Open source" },
+
+  uk: { name: "Українська",
+    title: "Реклама в YouTube <em>пропускається сама</em>",
+    lead: "AdSkipper натискає «Пропустити» замість вас, щойно кнопка з'являється, і вимикає звук, поки йде реклама.",
+    download: "Завантажити APK", size: "620 КБ", free: "Безкоштовно",
+    ad: "Реклама", adcopy: "Реклама", skip: "Пропустити",
+    cap1: "Так це виглядає в YouTube", cap2: "с заощаджено",
+    f1t: "Сам тисне «Пропустити»", f1: "Кнопка натискається одразу, щойно стане активною. Нічого чіпати не потрібно.",
+    f2t: "Вимикає звук реклами", f2: "Поки йде реклама, звук вимкнено. Почалося відео — звук повертається. Можна вимкнути в налаштуваннях.",
+    f3t: "Бачить лише YouTube", f3: "Працює тільки в застосунку YouTube і нічого нікуди не надсилає. В інтернет виходить лише, щоб перевірити оновлення.",
+    it: "Як встановити", isub: "Близько хвилини. Застосунок встановлюється з файлу, не з Google Play.",
+    qr: "Наведіть камеру телефона, щоб завантажити.",
+    s1t: "Завантажте й відкрийте файл", s1: "Натисніть «Завантажити APK», потім відкрийте AdSkipper.apk зі сповіщення або теки «Завантаження».",
+    s2t: "Дозвольте встановлення", s2: "Телефон запитає, чи можна встановлювати застосунки з браузера, — дозвольте. Якщо Play Protect попередить, натисніть «Усе одно встановити».",
+    s3t: "Увімкніть сервіс", s3: "Відкрийте AdSkipper, натисніть велику кнопку й увімкніть AdSkipper у розділі «Спеціальні можливості».",
+    s4t: "Якщо перемикач сірий", s4: "На Android 13 і новіших: <span class=\"path\">Налаштування → Застосунки → AdSkipper → ⋮ → Дозволити обмежені налаштування</span>, потім повторіть крок 3.",
+    nt: "Корисно знати",
+    n1: "Лише для Android. На iPhone такі застосунки заборонені.",
+    n2: "Рекламу без кнопки «Пропустити» пропустити не можна, але звук у неї буде вимкнено.",
+    n3: "Працює з офіційним застосунком YouTube, а не з сайтом у браузері.",
+    n4: "Оновлення встановлюються поверх старої версії: застосунок сам покаже кнопку «Оновити», коли вийде нова.",
+    dls: "Завантажень", foot: "Відкритий код" },
+
+  es: { name: "Español",
+    title: "Los anuncios de YouTube <em>se saltan solos</em>",
+    lead: "AdSkipper pulsa «Saltar» por ti en cuanto aparece y silencia el sonido mientras dura el anuncio.",
+    download: "Descargar APK", size: "620 KB", free: "Gratis",
+    ad: "Anuncio", adcopy: "Anuncio", skip: "Saltar",
+    cap1: "Así se ve en YouTube", cap2: "s ahorrados",
+    f1t: "Pulsa «Saltar» por ti", f1: "El botón se pulsa en cuanto se activa. No tienes que tocar nada.",
+    f2t: "Silencia los anuncios", f2: "Sin sonido durante el anuncio; vuelve cuando empieza tu vídeo. Se puede desactivar.",
+    f3t: "Solo ve YouTube", f3: "Funciona solo dentro de la app de YouTube y no envía nada. Solo se conecta a internet para buscar actualizaciones.",
+    it: "Cómo instalarla", isub: "Cuesta un minuto. La app se instala desde un archivo, no desde Google Play.",
+    qr: "Apunta la cámara del móvil aquí para descargarla.",
+    s1t: "Descarga y abre el archivo", s1: "Pulsa «Descargar APK» y abre AdSkipper.apk desde la notificación o la carpeta Descargas.",
+    s2t: "Permite la instalación", s2: "El móvil preguntará si puede instalar apps desde el navegador: permítelo. Si Play Protect avisa, pulsa «Instalar de todas formas».",
+    s3t: "Activa el servicio", s3: "Abre AdSkipper, pulsa el botón grande y activa AdSkipper en Accesibilidad.",
+    s4t: "Si el interruptor está gris", s4: "En Android 13 o posterior: <span class=\"path\">Ajustes → Aplicaciones → AdSkipper → ⋮ → Permitir ajustes restringidos</span> y repite el paso 3.",
+    nt: "Conviene saber",
+    n1: "Solo para Android. En iPhone no se permiten apps así.",
+    n2: "Los anuncios sin botón «Saltar» no se pueden saltar, pero se silencian.",
+    n3: "Funciona con la app oficial de YouTube, no con la web en el navegador.",
+    n4: "Las actualizaciones se instalan encima de la versión anterior. La app muestra un botón «Actualizar» cuando sale una nueva.",
+    dls: "Descargas", foot: "Código abierto" },
+
+  de: { name: "Deutsch",
+    title: "YouTube-Werbung <em>überspringt sich selbst</em>",
+    lead: "AdSkipper tippt für dich auf „Überspringen“, sobald der Button erscheint, und schaltet den Ton stumm, solange Werbung läuft.",
+    download: "APK herunterladen", size: "620 KB", free: "Kostenlos",
+    ad: "Anzeige", adcopy: "Werbung", skip: "Überspringen",
+    cap1: "So sieht es in YouTube aus", cap2: "Sek. gespart",
+    f1t: "Tippt selbst auf „Überspringen“", f1: "Der Button wird gedrückt, sobald er aktiv ist. Du musst nichts tun.",
+    f2t: "Schaltet Werbung stumm", f2: "Während der Werbung ist der Ton aus, beim Video ist er wieder da. Lässt sich abschalten.",
+    f3t: "Sieht nur YouTube", f3: "Läuft nur in der YouTube-App und sendet nichts. Ins Internet geht sie nur, um nach Updates zu suchen.",
+    it: "So installierst du es", isub: "Dauert etwa eine Minute. Die App wird aus einer Datei installiert, nicht aus Google Play.",
+    qr: "Mit der Handykamera scannen zum Herunterladen.",
+    s1t: "Datei laden und öffnen", s1: "Tippe auf „APK herunterladen“ und öffne AdSkipper.apk über die Benachrichtigung oder den Download-Ordner.",
+    s2t: "Installation erlauben", s2: "Das Handy fragt, ob der Browser Apps installieren darf – erlaube es. Warnt Play Protect, tippe auf „Trotzdem installieren“.",
+    s3t: "Dienst einschalten", s3: "Öffne AdSkipper, tippe auf den großen Button und aktiviere AdSkipper unter Bedienungshilfen.",
+    s4t: "Wenn der Schalter grau ist", s4: "Ab Android 13: <span class=\"path\">Einstellungen → Apps → AdSkipper → ⋮ → Eingeschränkte Einstellungen zulassen</span>, dann Schritt 3 wiederholen.",
+    nt: "Gut zu wissen",
+    n1: "Nur für Android. Auf dem iPhone sind solche Apps nicht erlaubt.",
+    n2: "Werbung ohne „Überspringen“-Button lässt sich nicht überspringen, wird aber stummgeschaltet.",
+    n3: "Funktioniert mit der offiziellen YouTube-App, nicht mit der Website im Browser.",
+    n4: "Updates werden über die alte Version installiert. Die App zeigt einen „Aktualisieren“-Button, sobald eine neue erscheint.",
+    dls: "Downloads", foot: "Open Source" },
+
+  fr: { name: "Français",
+    title: "Les pubs YouTube <em>se passent toutes seules</em>",
+    lead: "AdSkipper appuie sur « Passer » à votre place dès qu'il apparaît, et coupe le son pendant la pub.",
+    download: "Télécharger l'APK", size: "620 Ko", free: "Gratuit",
+    ad: "Annonce", adcopy: "Publicité", skip: "Passer",
+    cap1: "Voilà ce que ça donne dans YouTube", cap2: "s gagnées",
+    f1t: "Appuie sur « Passer »", f1: "Le bouton est pressé dès qu'il devient actif. Vous n'avez rien à toucher.",
+    f2t: "Coupe le son des pubs", f2: "Le son est coupé pendant la pub et revient avec la vidéo. Option désactivable.",
+    f3t: "Ne voit que YouTube", f3: "Fonctionne uniquement dans l'app YouTube et n'envoie rien. Elle se connecte seulement pour vérifier les mises à jour.",
+    it: "Installation", isub: "Une minute environ. L'app s'installe depuis un fichier, pas depuis Google Play.",
+    qr: "Visez avec l'appareil photo du téléphone pour télécharger.",
+    s1t: "Téléchargez et ouvrez le fichier", s1: "Appuyez sur « Télécharger l'APK », puis ouvrez AdSkipper.apk depuis la notification ou le dossier Téléchargements.",
+    s2t: "Autorisez l'installation", s2: "Le téléphone demande si le navigateur peut installer des apps : autorisez-le. Si Play Protect vous avertit, appuyez sur « Installer quand même ».",
+    s3t: "Activez le service", s3: "Ouvrez AdSkipper, appuyez sur le grand bouton et activez AdSkipper dans Accessibilité.",
+    s4t: "Si l'interrupteur est grisé", s4: "Sur Android 13 et plus : <span class=\"path\">Paramètres → Applications → AdSkipper → ⋮ → Autoriser les paramètres restreints</span>, puis refaites l'étape 3.",
+    nt: "À savoir",
+    n1: "Android uniquement. Ce type d'app n'est pas autorisé sur iPhone.",
+    n2: "Les pubs sans bouton « Passer » ne peuvent pas être passées, mais leur son est coupé.",
+    n3: "Fonctionne avec l'app YouTube officielle, pas avec le site dans un navigateur.",
+    n4: "Les mises à jour s'installent par-dessus l'ancienne version. L'app affiche un bouton « Mettre à jour » dès qu'une nouvelle sort.",
+    dls: "Téléchargements", foot: "Code source ouvert" },
+
+  pt: { name: "Português",
+    title: "Os anúncios do YouTube <em>pulam sozinhos</em>",
+    lead: "O AdSkipper toca em «Pular» por você assim que o botão aparece e silencia o som durante o anúncio.",
+    download: "Baixar APK", size: "620 KB", free: "Grátis",
+    ad: "Anúncio", adcopy: "Anúncio", skip: "Pular",
+    cap1: "É assim no YouTube", cap2: "s economizados",
+    f1t: "Toca em «Pular» por você", f1: "O botão é tocado assim que fica ativo. Você não precisa fazer nada.",
+    f2t: "Silencia os anúncios", f2: "Sem som durante o anúncio; ele volta quando o vídeo começa. Dá para desligar.",
+    f3t: "Só enxerga o YouTube", f3: "Funciona apenas dentro do app do YouTube e não envia nada. Só acessa a internet para procurar atualizações.",
+    it: "Como instalar", isub: "Leva cerca de um minuto. O app é instalado a partir de um arquivo, não pelo Google Play.",
+    qr: "Aponte a câmera do celular para baixar.",
+    s1t: "Baixe e abra o arquivo", s1: "Toque em «Baixar APK» e abra AdSkipper.apk pela notificação ou pela pasta Downloads.",
+    s2t: "Permita a instalação", s2: "O celular vai perguntar se o navegador pode instalar apps: permita. Se o Play Protect avisar, toque em «Instalar mesmo assim».",
+    s3t: "Ative o serviço", s3: "Abra o AdSkipper, toque no botão grande e ative o AdSkipper em Acessibilidade.",
+    s4t: "Se a chave estiver cinza", s4: "No Android 13 ou mais novo: <span class=\"path\">Configurações → Apps → AdSkipper → ⋮ → Permitir configurações restritas</span> e repita o passo 3.",
+    nt: "Bom saber",
+    n1: "Só para Android. Apps assim não são permitidos no iPhone.",
+    n2: "Anúncios sem botão «Pular» não podem ser pulados, mas ficam sem som.",
+    n3: "Funciona com o app oficial do YouTube, não com o site no navegador.",
+    n4: "As atualizações são instaladas por cima da versão antiga. O app mostra um botão «Atualizar» quando sai uma nova.",
+    dls: "Downloads", foot: "Código aberto" },
+
+  tr: { name: "Türkçe",
+    title: "YouTube reklamları <em>kendiliğinden geçilir</em>",
+    lead: "AdSkipper, «Atla» düğmesi belirdiği anda sizin yerinize dokunur ve reklam sürerken sesi kapatır.",
+    download: "APK'yı indir", size: "620 KB", free: "Ücretsiz",
+    ad: "Reklam", adcopy: "Reklam", skip: "Atla",
+    cap1: "YouTube'da böyle görünür", cap2: "sn kazanıldı",
+    f1t: "«Atla»ya kendisi basar", f1: "Düğme etkin olur olmaz basılır. Hiçbir şeye dokunmanız gerekmez.",
+    f2t: "Reklamların sesini kapatır", f2: "Reklam sırasında ses kapalı, video başlayınca geri gelir. İsterseniz kapatabilirsiniz.",
+    f3t: "Sadece YouTube'u görür", f3: "Yalnızca YouTube uygulamasında çalışır ve hiçbir yere veri göndermez. İnternete sadece güncellemeleri kontrol etmek için bağlanır.",
+    it: "Nasıl kurulur", isub: "Yaklaşık bir dakika. Uygulama Google Play'den değil, dosyadan kurulur.",
+    qr: "İndirmek için telefon kamerasını tutun.",
+    s1t: "Dosyayı indirip açın", s1: "«APK'yı indir»e dokunun, ardından AdSkipper.apk dosyasını bildirimden veya İndirilenler klasöründen açın.",
+    s2t: "Kuruluma izin verin", s2: "Telefon, tarayıcının uygulama kurmasına izin verilip verilmeyeceğini sorar: izin verin. Play Protect uyarırsa «Yine de yükle»ye dokunun.",
+    s3t: "Hizmeti açın", s3: "AdSkipper'ı açın, büyük düğmeye dokunun ve Erişilebilirlik bölümünde AdSkipper'ı etkinleştirin.",
+    s4t: "Anahtar griyse", s4: "Android 13 ve üzeri: <span class=\"path\">Ayarlar → Uygulamalar → AdSkipper → ⋮ → Kısıtlanmış ayarlara izin ver</span>, sonra 3. adımı tekrarlayın.",
+    nt: "Bilmekte fayda var",
+    n1: "Yalnızca Android. iPhone'da bu tür uygulamalara izin verilmez.",
+    n2: "«Atla» düğmesi olmayan reklamlar geçilemez, ancak sesleri kapatılır.",
+    n3: "Resmi YouTube uygulamasıyla çalışır, tarayıcıdaki siteyle değil.",
+    n4: "Güncellemeler eski sürümün üzerine kurulur. Yeni sürüm çıktığında uygulama «Güncelle» düğmesi gösterir.",
+    dls: "İndirme", foot: "Açık kaynak" },
+
+  lv: { name: "Latviešu",
+    title: "YouTube reklāmas <em>izlaižas pašas</em>",
+    lead: "AdSkipper nospiež “Izlaist” jūsu vietā, tiklīdz poga parādās, un izslēdz skaņu reklāmas laikā.",
+    download: "Lejupielādēt APK", size: "620 KB", free: "Bez maksas",
+    ad: "Reklāma", adcopy: "Reklāma", skip: "Izlaist",
+    cap1: "Tā tas izskatās YouTube", cap2: "s ietaupītas",
+    f1t: "Pats nospiež “Izlaist”", f1: "Poga tiek nospiesta, tiklīdz tā kļūst aktīva. Jums nekas nav jādara.",
+    f2t: "Izslēdz reklāmu skaņu", f2: "Reklāmas laikā skaņa ir izslēgta, video sākumā tā atgriežas. To var atslēgt.",
+    f3t: "Redz tikai YouTube", f3: "Darbojas tikai YouTube lietotnē un nekur nesūta datus. Internetam pieslēdzas tikai, lai pārbaudītu atjauninājumus.",
+    it: "Kā instalēt", isub: "Apmēram minūte. Lietotne tiek instalēta no faila, nevis no Google Play.",
+    qr: "Pavērsiet tālruņa kameru, lai lejupielādētu.",
+    s1t: "Lejupielādējiet un atveriet failu", s1: "Nospiediet “Lejupielādēt APK”, pēc tam atveriet AdSkipper.apk no paziņojuma vai mapes “Lejupielādes”.",
+    s2t: "Atļaujiet instalēšanu", s2: "Tālrunis jautās, vai pārlūks drīkst instalēt lietotnes, — atļaujiet. Ja Play Protect brīdina, nospiediet “Tomēr instalēt”.",
+    s3t: "Ieslēdziet pakalpojumu", s3: "Atveriet AdSkipper, nospiediet lielo pogu un ieslēdziet AdSkipper sadaļā “Pieejamība”.",
+    s4t: "Ja slēdzis ir pelēks", s4: "Android 13 un jaunākās versijās: <span class=\"path\">Iestatījumi → Lietotnes → AdSkipper → ⋮ → Atļaut ierobežotos iestatījumus</span>, pēc tam atkārtojiet 3. soli.",
+    nt: "Noderīgi zināt",
+    n1: "Tikai Android ierīcēm. iPhone šādas lietotnes nav atļautas.",
+    n2: "Reklāmas bez pogas “Izlaist” nevar izlaist, taču to skaņa tiks izslēgta.",
+    n3: "Darbojas ar oficiālo YouTube lietotni, nevis ar vietni pārlūkā.",
+    n4: "Atjauninājumi instalējas virs vecās versijas. Kad iznāk jauna, lietotne parāda pogu “Atjaunināt”.",
+    dls: "Lejupielādes", foot: "Atvērtais pirmkods" },
+
+  lt: { name: "Lietuvių",
+    title: "YouTube reklamos <em>praleidžiamos pačios</em>",
+    lead: "AdSkipper paspaudžia „Praleisti“ už jus, kai tik mygtukas atsiranda, ir išjungia garsą, kol rodoma reklama.",
+    download: "Atsisiųsti APK", size: "620 KB", free: "Nemokamai",
+    ad: "Reklama", adcopy: "Reklama", skip: "Praleisti",
+    cap1: "Taip tai atrodo YouTube", cap2: "s sutaupyta",
+    f1t: "Pats spaudžia „Praleisti“", f1: "Mygtukas paspaudžiamas, kai tik tampa aktyvus. Nieko liesti nereikia.",
+    f2t: "Išjungia reklamų garsą", f2: "Reklamos metu garsas išjungtas, prasidėjus vaizdo įrašui jis grįžta. Galima išjungti.",
+    f3t: "Mato tik YouTube", f3: "Veikia tik YouTube programėlėje ir niekur nesiunčia duomenų. Prie interneto jungiasi tik naujinimams patikrinti.",
+    it: "Kaip įdiegti", isub: "Apie minutę. Programėlė diegiama iš failo, ne iš Google Play.",
+    qr: "Nukreipkite telefono kamerą, kad atsisiųstumėte.",
+    s1t: "Atsisiųskite ir atidarykite failą", s1: "Paspauskite „Atsisiųsti APK“, tada atidarykite AdSkipper.apk iš pranešimo arba aplanko „Atsisiuntimai“.",
+    s2t: "Leiskite įdiegti", s2: "Telefonas paklaus, ar naršyklė gali diegti programas, — leiskite. Jei Play Protect įspės, paspauskite „Vis tiek įdiegti“.",
+    s3t: "Įjunkite paslaugą", s3: "Atidarykite AdSkipper, paspauskite didelį mygtuką ir įjunkite AdSkipper skiltyje „Pritaikymas neįgaliesiems“.",
+    s4t: "Jei jungiklis pilkas", s4: "Android 13 ir naujesnėse: <span class=\"path\">Nustatymai → Programos → AdSkipper → ⋮ → Leisti apribotus nustatymus</span>, tada pakartokite 3 žingsnį.",
+    nt: "Naudinga žinoti",
+    n1: "Tik Android įrenginiams. iPhone tokios programėlės draudžiamos.",
+    n2: "Reklamų be mygtuko „Praleisti“ praleisti negalima, bet jų garsas bus išjungtas.",
+    n3: "Veikia su oficialia YouTube programėle, ne su svetaine naršyklėje.",
+    n4: "Naujinimai diegiami ant senos versijos. Išėjus naujai, programėlė parodo mygtuką „Atnaujinti“.",
+    dls: "Atsisiuntimai", foot: "Atvirasis kodas" },
+
+  et: { name: "Eesti",
+    title: "YouTube’i reklaamid <em>jäävad ise vahele</em>",
+    lead: "AdSkipper vajutab teie eest „Jäta vahele“ kohe, kui nupp ilmub, ja vaigistab heli reklaami ajaks.",
+    download: "Laadi alla APK", size: "620 KB", free: "Tasuta",
+    ad: "Reklaam", adcopy: "Reklaam", skip: "Jäta vahele",
+    cap1: "Nii see YouTube’is välja näeb", cap2: "s säästetud",
+    f1t: "Vajutab ise „Jäta vahele“", f1: "Nuppu vajutatakse kohe, kui see aktiivseks muutub. Midagi pole vaja puudutada.",
+    f2t: "Vaigistab reklaamid", f2: "Reklaami ajal on heli väljas, video alguses tuleb tagasi. Saab välja lülitada.",
+    f3t: "Näeb ainult YouTube’i", f3: "Töötab ainult YouTube’i rakenduses ega saada andmeid kuhugi. Internetti kasutab ainult uuenduste kontrollimiseks.",
+    it: "Kuidas paigaldada", isub: "Umbes minut. Rakendus paigaldatakse failist, mitte Google Playst.",
+    qr: "Allalaadimiseks suunake telefoni kaamera siia.",
+    s1t: "Laadige fail alla ja avage", s1: "Vajutage „Laadi alla APK“ ja avage AdSkipper.apk teavitusest või kaustast „Allalaadimised“.",
+    s2t: "Lubage paigaldamine", s2: "Telefon küsib, kas brauser tohib rakendusi paigaldada, — lubage. Kui Play Protect hoiatab, vajutage „Paigalda ikkagi“.",
+    s3t: "Lülitage teenus sisse", s3: "Avage AdSkipper, vajutage suurt nuppu ja lülitage AdSkipper sisse jaotises „Juurdepääsetavus“.",
+    s4t: "Kui lüliti on hall", s4: "Android 13 ja uuemates: <span class=\"path\">Seaded → Rakendused → AdSkipper → ⋮ → Luba piiratud seaded</span>, seejärel korrake 3. sammu.",
+    nt: "Kasulik teada",
+    n1: "Ainult Androidile. iPhone’is pole sellised rakendused lubatud.",
+    n2: "Ilma „Jäta vahele“ nuputa reklaame vahele jätta ei saa, kuid need vaigistatakse.",
+    n3: "Töötab ametliku YouTube’i rakendusega, mitte brauseris avatud saidiga.",
+    n4: "Uuendused paigalduvad vana versiooni peale. Kui ilmub uus, näitab rakendus nuppu „Uuenda“.",
+    dls: "Allalaadimisi", foot: "Avatud lähtekood" },
+};
+
+const sel = document.getElementById("lang-select");
+for (const [code, d] of Object.entries(L)) sel.add(new Option(d.name, code));
+
+function pickLang() {
+  const h = location.hash.slice(1);
+  if (L[h]) return h;
+  try { const s = localStorage.getItem("lang"); if (L[s]) return s; } catch (e) {}
+  for (const l of navigator.languages || [navigator.language || "en"]) {
+    const c = (l || "").slice(0, 2).toLowerCase();
+    if (L[c]) return c;
+  }
+  return "en";
+}
+
+let cur = "ru";
+function apply(code) {
+  cur = code;
+  const d = L[code];
+  document.documentElement.lang = code;
+  sel.value = code;
+  document.querySelectorAll("[data-i18n]").forEach(el => { const k = el.dataset.i18n; if (d[k] != null) el.textContent = d[k]; });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { const k = el.dataset.i18nHtml; if (d[k] != null) el.innerHTML = d[k]; });
+  const dl = document.getElementById("dl-count");
+  dl.hidden = DOWNLOADS < SHOW_FROM;
+  if (!dl.hidden) dl.textContent = d.dls + ": " + new Intl.NumberFormat(code).format(DOWNLOADS);
+  renderSkip();
+}
+sel.addEventListener("change", () => {
+  try { localStorage.setItem("lang", sel.value); } catch (e) {}
+  if (location.hash) location.hash = sel.value;
+  apply(sel.value);
+});
+window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (L[h]) apply(h); });
+
+/* QR code for visitors on a computer */
+try { new QRCode(document.getElementById("qr"), { text: APK, width: 184, height: 184, colorDark: "#12141C", colorLight: "#FFFFFF", correctLevel: QRCode.CorrectLevel.M }); }
+catch (e) { document.querySelector(".qr").hidden = true; }
+
+/* Looping demo: 5-second countdown, then the skip button gets tapped */
+const skip = document.getElementById("skip"), label = document.getElementById("skip-label");
+const tap = document.getElementById("tap"), bar = document.getElementById("bar");
+const adScene = document.getElementById("scene-ad"), vidScene = document.getElementById("scene-video");
+const badge = document.getElementById("badge"), badgeTime = document.getElementById("badge-time");
+const savedEl = document.getElementById("saved");
+const SKIP_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l9 7-9 7V5zm11 0h3v14h-3z"/></svg>';
+let count = 5, saved = 0;
+
+function renderSkip() {
+  if (count > 0) { skip.classList.remove("ready"); label.innerHTML = '<span class="count">' + count + '</span>'; }
+  else { skip.classList.add("ready"); label.innerHTML = '<span></span>'; label.firstChild.textContent = L[cur].skip; label.insertAdjacentHTML("beforeend", SKIP_ICON); }
+}
+
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+async function loop() {
+  for (;;) {
+    adScene.style.opacity = 1; vidScene.style.opacity = 0;
+    badge.hidden = false; skip.hidden = false; skip.classList.remove("tapped");
+    bar.style.width = "0%";
+    for (count = 5; count >= 0; count--) {
+      renderSkip();
+      badgeTime.textContent = "0:" + String(10 + count).padStart(2, "0");
+      bar.style.width = ((5 - count) / 15 * 100) + "%";
+      if (count > 0) await wait(800);
+    }
+    await wait(250);
+    tap.classList.remove("on"); void tap.offsetWidth; tap.classList.add("on");
+    skip.classList.add("tapped");
+    await wait(300);
+    saved += 10; savedEl.textContent = saved;
+    adScene.style.opacity = 0; vidScene.style.opacity = 1;
+    badge.hidden = true; skip.hidden = true; bar.style.width = "0%";
+    await wait(2200);
+  }
+}
+
+apply(pickLang());
+if (reduce) { count = 0; renderSkip(); } else { loop(); }
+</script>

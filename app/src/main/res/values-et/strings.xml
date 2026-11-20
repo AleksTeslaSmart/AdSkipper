@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_name">AdSkipper — YouTube’i reklaamide vahelejätmine</string>
+    <string name="service_description">Vajutab YouTube’i rakenduses automaatselt nuppu „Jäta vahele“ ja soovi korral vaigistab heli reklaamide ajal. Teenus näeb ainult YouTube’i aknaid ega saada andmeid kuhugi.</string>
+    <string name="status_on">✅ Teenus on sees</string>
+    <string name="status_off">❌ Teenus on väljas</string>
+    <string name="btn_enable">Lülita teenus sisse</string>
+    <string name="btn_settings">Ava juurdepääsetavuse seaded</string>
+    <string name="mute_ads">Vaigista heli reklaamide ajal</string>
+    <string name="skipped_count">Vahele jäetud reklaame: %d</string>
+    <string name="btn_update">Uuenda versioonile %s</string>
+    <string name="help">Kuidas sisse lülitada:\n1. Vajutage ülal olevat nuppu.\n2. Leidke AdSkipper jaotisest „Allalaaditud rakendused“ või „Installitud teenused“.\n3. Lülitage lüliti sisse ja kinnitage.\n\nKui lüliti on hall (Android 13+): Seaded → Rakendused → AdSkipper → ⋮ (üleval paremal) → „Luba piiratud seaded“, seejärel proovige uuesti.</string>
+</resources>

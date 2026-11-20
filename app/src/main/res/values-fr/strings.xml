@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_name">AdSkipper — passer les pubs YouTube</string>
+    <string name="service_description">Appuie automatiquement sur « Passer » dans l’app YouTube et, si vous le souhaitez, coupe le son pendant les pubs. Le service ne voit que les fenêtres de YouTube et n’envoie aucune donnée.</string>
+    <string name="status_on">✅ Service activé</string>
+    <string name="status_off">❌ Service désactivé</string>
+    <string name="btn_enable">Activer le service</string>
+    <string name="btn_settings">Ouvrir les paramètres d’accessibilité</string>
+    <string name="mute_ads">Couper le son pendant les pubs</string>
+    <string name="skipped_count">Pubs passées : %d</string>
+    <string name="btn_update">Mettre à jour vers la version %s</string>
+    <string name="help">Comment l’activer :\n1. Appuyez sur le bouton ci-dessus.\n2. Trouvez AdSkipper dans « Applications téléchargées » ou « Services installés ».\n3. Activez l’interrupteur et confirmez.\n\nSi l’interrupteur est grisé (Android 13+) : Paramètres → Applications → AdSkipper → ⋮ (en haut à droite) → « Autoriser les paramètres restreints », puis réessayez.</string>
+</resources>

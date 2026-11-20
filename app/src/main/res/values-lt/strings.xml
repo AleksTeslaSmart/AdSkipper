@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_name">AdSkipper — YouTube reklamų praleidimas</string>
+    <string name="service_description">Automatiškai paspaudžia „Praleisti“ YouTube programėlėje ir, jei norite, išjungia garsą reklamų metu. Paslauga mato tik YouTube langus ir niekur nesiunčia duomenų.</string>
+    <string name="status_on">✅ Paslauga įjungta</string>
+    <string name="status_off">❌ Paslauga išjungta</string>
+    <string name="btn_enable">Įjungti paslaugą</string>
+    <string name="btn_settings">Atidaryti pritaikymo neįgaliesiems nustatymus</string>
+    <string name="mute_ads">Išjungti garsą reklamų metu</string>
+    <string name="skipped_count">Praleista reklamų: %d</string>
+    <string name="btn_update">Atnaujinti į versiją %s</string>
+    <string name="help">Kaip įjungti:\n1. Paspauskite mygtuką aukščiau.\n2. Raskite AdSkipper skiltyje „Atsisiųstos programos“ arba „Įdiegtos paslaugos“.\n3. Įjunkite jungiklį ir patvirtinkite.\n\nJei jungiklis pilkas (Android 13+): Nustatymai → Programos → AdSkipper → ⋮ (viršuje dešinėje) → „Leisti apribotus nustatymus“, tada bandykite dar kartą.</string>
+</resources>

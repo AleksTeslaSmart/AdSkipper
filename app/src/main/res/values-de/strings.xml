@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_name">AdSkipper – YouTube-Werbung überspringen</string>
+    <string name="service_description">Tippt in der YouTube-App automatisch auf „Überspringen“ und schaltet auf Wunsch den Ton während der Werbung stumm. Der Dienst sieht nur YouTube-Fenster und sendet keine Daten.</string>
+    <string name="status_on">✅ Dienst ist an</string>
+    <string name="status_off">❌ Dienst ist aus</string>
+    <string name="btn_enable">Dienst einschalten</string>
+    <string name="btn_settings">Bedienungshilfen öffnen</string>
+    <string name="mute_ads">Ton während Werbung stummschalten</string>
+    <string name="skipped_count">Übersprungene Werbung: %d</string>
+    <string name="btn_update">Auf Version %s aktualisieren</string>
+    <string name="help">So schaltest du ihn ein:\n1. Tippe oben auf den Button.\n2. Suche AdSkipper unter „Heruntergeladene Apps“ oder „Installierte Dienste“.\n3. Schalter einschalten und bestätigen.\n\nWenn der Schalter grau ist (Android 13+): Einstellungen → Apps → AdSkipper → ⋮ (oben rechts) → „Eingeschränkte Einstellungen zulassen“, dann erneut versuchen.</string>
+</resources>

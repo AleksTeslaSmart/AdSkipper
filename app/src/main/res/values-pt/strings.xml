@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="service_name">AdSkipper — pular anúncios do YouTube</string>
+    <string name="service_description">Toca em «Pular» automaticamente no app do YouTube e, se você quiser, silencia o som durante os anúncios. O serviço só vê as janelas do YouTube e não envia dados para lugar nenhum.</string>
+    <string name="status_on">✅ Serviço ativado</string>
+    <string name="status_off">❌ Serviço desativado</string>
+    <string name="btn_enable">Ativar serviço</string>
+    <string name="btn_settings">Abrir configurações de acessibilidade</string>
+    <string name="mute_ads">Silenciar durante os anúncios</string>
+    <string name="skipped_count">Anúncios pulados: %d</string>
+    <string name="btn_update">Atualizar para a versão %s</string>
+    <string name="help">Como ativar:\n1. Toque no botão acima.\n2. Encontre o AdSkipper em «Apps baixados» ou «Serviços instalados».\n3. Ative a chave e confirme.\n\nSe a chave estiver cinza (Android 13+): Configurações → Apps → AdSkipper → ⋮ (canto superior direito) → «Permitir configurações restritas» e tente de novo.</string>
+</resources>

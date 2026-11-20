@@ -41,7 +41,10 @@ class SkipAdService : AccessibilityService() {
         // Запасной вариант: поиск по тексту (разные языки интерфейса)
         private val SKIP_TEXTS = listOf(
             "Пропустить", "Пропустить рекламу", "Skip", "Skip ad", "Skip ads",
-            "Пропустити", "Überspringen", "Passer", "Saltar", "Salta", "Pomiń",
+            "Пропустити", "Пропустити рекламу", "Überspringen", "Werbung überspringen",
+            "Passer", "Ignorer", "Saltar", "Omitir", "Saltar anuncio", "Pular", "Pular anúncio",
+            "Ignorar", "Atla", "Reklamı atla", "Izlaist", "Izlaist reklāmu", "Praleisti",
+            "Praleisti reklamą", "Jäta vahele", "Salta", "Pomiń",
         )
 
         @Volatile
