@@ -314,10 +314,6 @@ footer a { color: var(--ink); }
         <div class="perm-do" data-i18n="p1d">Поставьте галочку «Я осознаю риски» и нажмите OK. Это нужно один раз — для браузера.</div>
       </li>
       <li class="perm">
-        <div class="perm-see"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg><span data-i18n="p2s">Play Protect: «Небезопасное приложение заблокировано»</span></div>
-        <div class="perm-do" data-i18n="p2d">Нажмите «Подробнее» → «Всё равно установить». Отправлять приложение на проверку не нужно.</div>
-      </li>
-      <li class="perm">
         <div class="perm-see"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L1 21h22L12 2zm1 15h-2v-2h2v2zm0-4h-2V9h2v4z"/></svg><span data-i18n="p3s">«Настройки с ограниченным доступом»</span></div>
         <div class="perm-do" data-i18n="p3d">Нажмите OK. В AdSkipper нажмите «Снять блокировку» → ⋮ → «Разрешить настройки с ограниченным доступом».</div>
       </li>
@@ -380,8 +376,6 @@ const L = {
     pt_sub: "Для приложений не из Google Play Android показывает несколько предупреждений. Это нормально — вот что нажимать.",
     p1s: "«Установка неизвестных приложений» или красное окно «Danger» (Xiaomi)",
     p1d: "Поставьте галочку «Я осознаю риски» и нажмите OK. Это нужно один раз — для браузера.",
-    p2s: "Play Protect: «Небезопасное приложение заблокировано»",
-    p2d: "Нажмите «Подробнее» → «Всё равно установить». Отправлять приложение на проверку не нужно.",
     p3s: "«Настройки с ограниченным доступом»",
     p3d: "Нажмите OK. В AdSkipper нажмите «Снять блокировку» → ⋮ → «Разрешить настройки с ограниченным доступом».",
     p4s: "«Разрешить AdSkipper полный контроль над устройством?»",
@@ -414,8 +408,6 @@ const L = {
     pt_sub: "Android shows a few warnings for apps from outside Google Play. That's normal. Here's what to tap.",
     p1s: "“Install unknown apps” or a red “Danger” window (Xiaomi)",
     p1d: "Tick “I'm aware of the risks” and tap OK. You only do this once, for your browser.",
-    p2s: "Play Protect: “Unsafe app blocked”",
-    p2d: "Tap “More details” → “Install anyway”. There's no need to send the app for scanning.",
     p3s: "“Restricted setting”",
     p3d: "Tap OK. In AdSkipper, tap “Unlock” → ⋮ → “Allow restricted settings”.",
     p4s: "“Allow AdSkipper to have full control of your device?”",
@@ -448,8 +440,6 @@ const L = {
     pt_sub: "Для застосунків не з Google Play Android показує кілька попереджень. Це нормально — ось що натискати.",
     p1s: "«Встановлення невідомих застосунків» або червоне вікно «Danger» (Xiaomi)",
     p1d: "Поставте галочку «Я усвідомлюю ризики» й натисніть OK. Це потрібно один раз — для браузера.",
-    p2s: "Play Protect: «Небезпечний застосунок заблоковано»",
-    p2d: "Натисніть «Докладніше» → «Усе одно встановити». Надсилати застосунок на перевірку не потрібно.",
     p3s: "«Обмежені налаштування»",
     p3d: "Натисніть OK. В AdSkipper натисніть «Зняти блокування» → ⋮ → «Дозволити обмежені налаштування».",
     p4s: "«Надати AdSkipper повний контроль над пристроєм?»",
@@ -482,8 +472,6 @@ const L = {
     pt_sub: "Android muestra varios avisos con las apps que no vienen de Google Play. Es normal: esto es lo que hay que pulsar.",
     p1s: "«Instalar apps desconocidas» o una ventana roja «Danger» (Xiaomi)",
     p1d: "Marca «Soy consciente de los riesgos» y pulsa OK. Solo una vez, para tu navegador.",
-    p2s: "Play Protect: «App no segura bloqueada»",
-    p2d: "Pulsa «Más detalles» → «Instalar de todas formas». No hace falta enviar la app a analizar.",
     p3s: "«Ajuste restringido»",
     p3d: "Pulsa OK. En AdSkipper pulsa «Desbloquear» → ⋮ → «Permitir ajustes restringidos».",
     p4s: "«¿Permitir que AdSkipper tenga el control total del dispositivo?»",
@@ -516,8 +504,6 @@ const L = {
     pt_sub: "Bei Apps außerhalb von Google Play zeigt Android mehrere Warnungen. Das ist normal – hier steht, was du tippst.",
     p1s: "„Unbekannte Apps installieren“ oder ein rotes „Danger“-Fenster (Xiaomi)",
     p1d: "Hake „Ich bin mir der Risiken bewusst“ an und tippe auf OK. Nur einmal, für deinen Browser.",
-    p2s: "Play Protect: „Unsichere App blockiert“",
-    p2d: "Tippe auf „Weitere Details“ → „Trotzdem installieren“. Die App musst du nicht zur Prüfung senden.",
     p3s: "„Eingeschränkte Einstellung“",
     p3d: "Tippe auf OK. Tippe in AdSkipper auf „Entsperren“ → ⋮ → „Eingeschränkte Einstellungen zulassen“.",
     p4s: "„AdSkipper die volle Kontrolle über dein Gerät erlauben?“",
@@ -550,8 +536,6 @@ const L = {
     pt_sub: "Android affiche plusieurs avertissements pour les apps hors Google Play. C'est normal : voici quoi toucher.",
     p1s: "« Installer des applis inconnues » ou une fenêtre rouge « Danger » (Xiaomi)",
     p1d: "Cochez « Je suis conscient des risques » et appuyez sur OK. Une seule fois, pour votre navigateur.",
-    p2s: "Play Protect : « Application dangereuse bloquée »",
-    p2d: "Appuyez sur « Plus de détails » → « Installer quand même ». Inutile d'envoyer l'app pour analyse.",
     p3s: "« Paramètre restreint »",
     p3d: "Appuyez sur OK. Dans AdSkipper, appuyez sur « Débloquer » → ⋮ → « Autoriser les paramètres restreints ».",
     p4s: "« Autoriser AdSkipper à contrôler entièrement votre appareil ? »",
@@ -584,8 +568,6 @@ const L = {
     pt_sub: "O Android mostra alguns avisos para apps fora do Google Play. É normal — veja o que tocar.",
     p1s: "«Instalar apps desconhecidos» ou uma janela vermelha «Danger» (Xiaomi)",
     p1d: "Marque «Estou ciente dos riscos» e toque em OK. Só uma vez, para o seu navegador.",
-    p2s: "Play Protect: «App não seguro bloqueado»",
-    p2d: "Toque em «Mais detalhes» → «Instalar mesmo assim». Não precisa enviar o app para verificação.",
     p3s: "«Configuração restrita»",
     p3d: "Toque em OK. No AdSkipper, toque em «Desbloquear» → ⋮ → «Permitir configurações restritas».",
     p4s: "«Permitir que o AdSkipper tenha controle total do dispositivo?»",
@@ -618,8 +600,6 @@ const L = {
     pt_sub: "Android, Google Play dışından gelen uygulamalar için birkaç uyarı gösterir. Bu normal — neye dokunacağınız burada.",
     p1s: "«Bilinmeyen uygulamaları yükle» veya kırmızı «Danger» penceresi (Xiaomi)",
     p1d: "«Risklerin farkındayım» kutusunu işaretleyip OK'e dokunun. Tarayıcınız için yalnızca bir kez.",
-    p2s: "Play Protect: «Güvenli olmayan uygulama engellendi»",
-    p2d: "«Diğer ayrıntılar» → «Yine de yükle»ye dokunun. Uygulamayı taramaya göndermeniz gerekmez.",
     p3s: "«Kısıtlanmış ayar»",
     p3d: "OK'e dokunun. AdSkipper'da «Kilidi aç» → ⋮ → «Kısıtlanmış ayarlara izin ver»e dokunun.",
     p4s: "«AdSkipper'ın cihazınızı tamamen kontrol etmesine izin verilsin mi?»",
@@ -652,8 +632,6 @@ const L = {
     pt_sub: "Lietotnēm ne no Google Play Android rāda vairākus brīdinājumus. Tas ir normāli — lūk, ko spiest.",
     p1s: "“Instalēt nezināmas lietotnes” vai sarkans logs “Danger” (Xiaomi)",
     p1d: "Atzīmējiet “Es apzinos riskus” un nospiediet OK. Tikai vienreiz — jūsu pārlūkam.",
-    p2s: "Play Protect: “Nedroša lietotne bloķēta”",
-    p2d: "Nospiediet “Sīkāka informācija” → “Tomēr instalēt”. Sūtīt lietotni pārbaudei nav nepieciešams.",
     p3s: "“Ierobežots iestatījums”",
     p3d: "Nospiediet OK. AdSkipper lietotnē nospiediet “Atbloķēt” → ⋮ → “Atļaut ierobežotos iestatījumus”.",
     p4s: "“Vai atļaut AdSkipper pilnībā kontrolēt jūsu ierīci?”",
@@ -686,8 +664,6 @@ const L = {
     pt_sub: "Programoms ne iš Google Play Android rodo kelis įspėjimus. Tai normalu — štai ką spausti.",
     p1s: "„Diegti nežinomas programas“ arba raudonas langas „Danger“ (Xiaomi)",
     p1d: "Pažymėkite „Suprantu riziką“ ir paspauskite OK. Tik kartą — jūsų naršyklei.",
-    p2s: "Play Protect: „Nesaugi programa užblokuota“",
-    p2d: "Paspauskite „Daugiau informacijos“ → „Vis tiek įdiegti“. Siųsti programos patikrinti nereikia.",
     p3s: "„Apribotas nustatymas“",
     p3d: "Paspauskite OK. AdSkipper programoje paspauskite „Atrakinti“ → ⋮ → „Leisti apribotus nustatymus“.",
     p4s: "„Leisti AdSkipper visiškai valdyti jūsų įrenginį?“",
@@ -720,8 +696,6 @@ const L = {
     pt_sub: "Väljastpoolt Google Playd tulevate rakenduste puhul näitab Android mitut hoiatust. See on normaalne — siin on, mida vajutada.",
     p1s: "„Tundmatute rakenduste installimine“ või punane aken „Danger“ (Xiaomi)",
     p1d: "Märkige „Olen riskidest teadlik“ ja vajutage OK. Ainult üks kord — teie brauserile.",
-    p2s: "Play Protect: „Ebaturvaline rakendus blokeeriti“",
-    p2d: "Vajutage „Rohkem üksikasju“ → „Installi ikkagi“. Rakendust pole vaja kontrolli saata.",
     p3s: "„Piiratud seade“",
     p3d: "Vajutage OK. Vajutage AdSkipperis „Ava lukk“ → ⋮ → „Luba piiratud seaded“.",
     p4s: "„Kas lubada AdSkipperil teie seadet täielikult juhtida?“",
