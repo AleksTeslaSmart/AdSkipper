@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AdSkipper</string>
+    <string name="service_name">AdSkipper — пропуск рекламы YouTube</string>
+    <string name="service_description">Автоматически нажимает кнопку «Пропустить» в приложении YouTube и (по желанию) выключает звук во время рекламы. Сервис видит только окна приложения YouTube и никуда не передаёт данные.</string>
+</resources>
