@@ -106,6 +106,21 @@ h1 em { font-style: normal; color: var(--accent); }
 .meta { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 14px; }
 .meta span + span::before { content: "·"; margin-right: 14px; color: var(--line); }
 
+/* joke sale: 0 € → 0 € */
+.promo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-bottom: 4px; }
+.promo-badge {
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase;
+  background: var(--accent); color: var(--accent-ink); padding: 4px 10px; border-radius: 6px;
+  transform: rotate(-3deg); display: inline-block; animation: promo-pop 0.6s ease-out 0.4s both;
+}
+@keyframes promo-pop { 0% { transform: rotate(-3deg) scale(1); } 40% { transform: rotate(-6deg) scale(1.12); } 100% { transform: rotate(-3deg) scale(1); } }
+.promo-was { color: var(--muted); font-size: 0.95rem; }
+.promo-was s { text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
+.promo-now { font-size: 1.05rem; }
+.promo-now b { font-family: var(--font-display); font-size: 1.35rem; color: var(--accent); letter-spacing: -0.01em; }
+.price { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.promo-note { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+
 /* player mock */
 .player { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
 .screen {
@@ -239,6 +254,11 @@ footer a { color: var(--ink); }
       <h1 data-i18n-html="title">Реклама в YouTube <em>пропускается сама</em></h1>
       <p class="lead" data-i18n="lead">AdSkipper нажимает кнопку «Пропустить» за вас, как только она появляется, и выключает звук, пока идёт реклама.</p>
       <div class="cta">
+        <div class="promo">
+          <span class="promo-badge" data-i18n="promo_badge">Суперскидка −0 %</span>
+          <span class="promo-was"><span data-i18n="promo_was">Было</span> <s class="price" data-price>0,00 €</s></span>
+          <span class="promo-now"><span data-i18n="promo_now">Сейчас</span> <b class="price" data-price>0,00 €</b></span>
+        </div>
         <a class="download" id="download" href="https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 3h2v9.2l3.3-3.3 1.4 1.4L12 16l-5.7-5.7 1.4-1.4 3.3 3.3V3zM5 19h14v2H5v-2z"/></svg>
           <span data-i18n="download">Скачать APK</span>
@@ -249,6 +269,7 @@ footer a { color: var(--ink); }
           <span data-i18n="free">Бесплатно</span>
           <span id="dl-count" hidden></span>
         </div>
+        <div class="promo-note" data-i18n="promo_note">Предложение ограничено: действует вечно.</div>
       </div>
     </div>
 
@@ -382,6 +403,10 @@ const L = {
     p4d: "Нажмите «Разрешить». Так AdSkipper видит экран YouTube и нажимает «Пропустить». Никакие данные никуда не отправляются.",
     p5s: "Сервис сам выключается (Xiaomi, Samsung, Huawei)",
     p5d: "Настройки → Приложения → AdSkipper → Батарея → «Нет ограничений».",
+    promo_badge: "Суперскидка −0 %",
+    promo_was: "Было",
+    promo_now: "Сейчас",
+    promo_note: "Предложение ограничено: действует вечно.",
     dls: "Скачиваний", foot: "Открытый исходный код" },
 
   en: { name: "English",
@@ -414,6 +439,10 @@ const L = {
     p4d: "Tap “Allow”. This lets AdSkipper see the YouTube screen and tap “Skip”. Nothing is sent anywhere.",
     p5s: "The service turns itself off (Xiaomi, Samsung, Huawei)",
     p5d: "Settings → Apps → AdSkipper → Battery → “No restrictions”.",
+    promo_badge: "Mega sale −0%",
+    promo_was: "Was",
+    promo_now: "Now",
+    promo_note: "Limited offer: valid forever.",
     dls: "Downloads", foot: "Open source" },
 
   uk: { name: "Українська",
@@ -446,6 +475,10 @@ const L = {
     p4d: "Натисніть «Дозволити». Так AdSkipper бачить екран YouTube і натискає «Пропустити». Жодні дані нікуди не надсилаються.",
     p5s: "Сервіс сам вимикається (Xiaomi, Samsung, Huawei)",
     p5d: "Налаштування → Застосунки → AdSkipper → Акумулятор → «Без обмежень».",
+    promo_badge: "Суперзнижка −0 %",
+    promo_was: "Було",
+    promo_now: "Зараз",
+    promo_note: "Обмежена пропозиція: діє вічно.",
     dls: "Завантажень", foot: "Відкритий код" },
 
   es: { name: "Español",
@@ -478,6 +511,10 @@ const L = {
     p4d: "Pulsa «Permitir». Así AdSkipper ve la pantalla de YouTube y pulsa «Saltar». No se envía nada.",
     p5s: "El servicio se apaga solo (Xiaomi, Samsung, Huawei)",
     p5d: "Ajustes → Aplicaciones → AdSkipper → Batería → «Sin restricciones».",
+    promo_badge: "Superdescuento −0 %",
+    promo_was: "Antes",
+    promo_now: "Ahora",
+    promo_note: "Oferta limitada: válida para siempre.",
     dls: "Descargas", foot: "Código abierto" },
 
   de: { name: "Deutsch",
@@ -510,6 +547,10 @@ const L = {
     p4d: "Tippe auf „Zulassen“. So sieht AdSkipper den YouTube-Bildschirm und tippt auf „Überspringen“. Es werden keine Daten gesendet.",
     p5s: "Der Dienst schaltet sich selbst ab (Xiaomi, Samsung, Huawei)",
     p5d: "Einstellungen → Apps → AdSkipper → Akku → „Nicht eingeschränkt“.",
+    promo_badge: "Mega-Rabatt −0 %",
+    promo_was: "Vorher",
+    promo_now: "Jetzt",
+    promo_note: "Begrenztes Angebot: gilt für immer.",
     dls: "Downloads", foot: "Open Source" },
 
   fr: { name: "Français",
@@ -542,6 +583,10 @@ const L = {
     p4d: "Appuyez sur « Autoriser ». C'est ainsi qu'AdSkipper voit l'écran de YouTube et appuie sur « Passer ». Rien n'est envoyé.",
     p5s: "Le service se désactive tout seul (Xiaomi, Samsung, Huawei)",
     p5d: "Paramètres → Applications → AdSkipper → Batterie → « Non restreinte ».",
+    promo_badge: "Super promo −0 %",
+    promo_was: "Avant",
+    promo_now: "Maintenant",
+    promo_note: "Offre limitée : valable pour toujours.",
     dls: "Téléchargements", foot: "Code source ouvert" },
 
   pt: { name: "Português",
@@ -574,6 +619,10 @@ const L = {
     p4d: "Toque em «Permitir». Assim o AdSkipper vê a tela do YouTube e toca em «Pular». Nada é enviado.",
     p5s: "O serviço desliga sozinho (Xiaomi, Samsung, Huawei)",
     p5d: "Configurações → Apps → AdSkipper → Bateria → «Sem restrições».",
+    promo_badge: "Superdesconto −0%",
+    promo_was: "Antes",
+    promo_now: "Agora",
+    promo_note: "Oferta limitada: vale para sempre.",
     dls: "Downloads", foot: "Código aberto" },
 
   tr: { name: "Türkçe",
@@ -606,6 +655,10 @@ const L = {
     p4d: "«İzin ver»e dokunun. AdSkipper böylece YouTube ekranını görür ve «Atla»ya basar. Hiçbir veri gönderilmez.",
     p5s: "Hizmet kendiliğinden kapanıyor (Xiaomi, Samsung, Huawei)",
     p5d: "Ayarlar → Uygulamalar → AdSkipper → Pil → «Kısıtlama yok».",
+    promo_badge: "Süper indirim: %0",
+    promo_was: "Önce",
+    promo_now: "Şimdi",
+    promo_note: "Sınırlı teklif: sonsuza kadar geçerli.",
     dls: "İndirme", foot: "Açık kaynak" },
 
   lv: { name: "Latviešu",
@@ -638,6 +691,10 @@ const L = {
     p4d: "Nospiediet “Atļaut”. Tā AdSkipper redz YouTube ekrānu un nospiež “Izlaist”. Nekādi dati netiek sūtīti.",
     p5s: "Pakalpojums pats izslēdzas (Xiaomi, Samsung, Huawei)",
     p5d: "Iestatījumi → Lietotnes → AdSkipper → Akumulators → “Bez ierobežojumiem”.",
+    promo_badge: "Superatlaide −0 %",
+    promo_was: "Agrāk",
+    promo_now: "Tagad",
+    promo_note: "Ierobežots piedāvājums: spēkā mūžīgi.",
     dls: "Lejupielādes", foot: "Atvērtais pirmkods" },
 
   lt: { name: "Lietuvių",
@@ -670,6 +727,10 @@ const L = {
     p4d: "Paspauskite „Leisti“. Taip AdSkipper mato YouTube ekraną ir paspaudžia „Praleisti“. Jokie duomenys niekur nesiunčiami.",
     p5s: "Paslauga pati išsijungia (Xiaomi, Samsung, Huawei)",
     p5d: "Nustatymai → Programos → AdSkipper → Akumuliatorius → „Be apribojimų“.",
+    promo_badge: "Supernuolaida −0 %",
+    promo_was: "Anksčiau",
+    promo_now: "Dabar",
+    promo_note: "Ribotas pasiūlymas: galioja amžinai.",
     dls: "Atsisiuntimai", foot: "Atvirasis kodas" },
 
   et: { name: "Eesti",
@@ -702,6 +763,10 @@ const L = {
     p4d: "Vajutage „Luba“. Nii näeb AdSkipper YouTube’i ekraani ja vajutab „Jäta vahele“. Andmeid ei saadeta kuhugi.",
     p5s: "Teenus lülitub ise välja (Xiaomi, Samsung, Huawei)",
     p5d: "Seaded → Rakendused → AdSkipper → Aku → „Piiranguteta“.",
+    promo_badge: "Superallahindlus −0%",
+    promo_was: "Varem",
+    promo_now: "Nüüd",
+    promo_note: "Piiratud pakkumine: kehtib igavesti.",
     dls: "Allalaadimisi", foot: "Avatud lähtekood" },
 };
 
@@ -727,6 +792,9 @@ function apply(code) {
   sel.value = code;
   document.querySelectorAll("[data-i18n]").forEach(el => { const k = el.dataset.i18n; if (d[k] != null) el.textContent = d[k]; });
   document.querySelectorAll("[data-i18n-html]").forEach(el => { const k = el.dataset.i18nHtml; if (d[k] != null) el.innerHTML = d[k]; });
+  let price = "0,00 €";
+  try { price = new Intl.NumberFormat(code, { style: "currency", currency: "EUR" }).format(0); } catch (e) {}
+  document.querySelectorAll("[data-price]").forEach(el => { el.textContent = price; });
   const dl = document.getElementById("dl-count");
   dl.hidden = DOWNLOADS < SHOW_FROM;
   if (!dl.hidden) dl.textContent = d.dls + ": " + new Intl.NumberFormat(code).format(DOWNLOADS);
