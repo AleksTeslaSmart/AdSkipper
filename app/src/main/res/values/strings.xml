@@ -11,5 +11,12 @@
     <string name="mute_ads">Mute sound during ads</string>
     <string name="skipped_count">Ads skipped: %d</string>
     <string name="btn_update">Update to version %s</string>
-    <string name="help">How to turn it on:\n1. Tap the button above.\n2. Find AdSkipper under “Downloaded apps” or “Installed services”.\n3. Turn the switch on and confirm.\n\nIf the switch is greyed out (Android 13+): Settings → Apps → AdSkipper → ⋮ (top right) → Allow restricted settings, then try again.</string>
+    <string name="step1_title">Step 1. Unlock</string>
+    <string name="step1_text">A settings screen will open. Tap ⋮ in the top right corner, then “Allow restricted settings”, and come back here.</string>
+    <string name="step1_btn">Unlock</string>
+    <string name="step2_title">Turn on AdSkipper</string>
+    <string name="step2_text">Turn on the AdSkipper switch and tap “Allow”. You will come back here automatically.</string>
+    <string name="step2_btn">Turn on</string>
+    <string name="done_title">Everything works</string>
+    <string name="done_text">YouTube ads will now be skipped automatically. You only need to do this once: it stays on after restarts and updates.</string>
 </resources>

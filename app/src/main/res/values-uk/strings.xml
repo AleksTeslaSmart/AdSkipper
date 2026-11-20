@@ -9,5 +9,12 @@
     <string name="mute_ads">Вимикати звук під час реклами</string>
     <string name="skipped_count">Пропущено реклам: %d</string>
     <string name="btn_update">Оновити до версії %s</string>
-    <string name="help">Як увімкнути:\n1. Натисніть кнопку вище.\n2. Знайдіть AdSkipper у розділі «Завантажені застосунки» або «Встановлені служби».\n3. Увімкніть перемикач і підтвердьте.\n\nЯкщо перемикач сірий (Android 13+): Налаштування → Застосунки → AdSkipper → ⋮ (угорі праворуч) → «Дозволити обмежені налаштування», потім повторіть.</string>
+    <string name="step1_title">Крок 1. Зніміть блокування</string>
+    <string name="step1_text">Відкриється екран налаштувань. Натисніть ⋮ у правому верхньому куті → «Дозволити обмежені налаштування» і поверніться сюди.</string>
+    <string name="step1_btn">Зняти блокування</string>
+    <string name="step2_title">Увімкніть AdSkipper</string>
+    <string name="step2_text">Увімкніть перемикач AdSkipper і натисніть «Дозволити». Ви одразу повернетеся сюди.</string>
+    <string name="step2_btn">Увімкнути</string>
+    <string name="done_title">Усе працює</string>
+    <string name="done_text">Реклама в YouTube тепер пропускається сама. Вмикати потрібно лише один раз: після перезавантаження й оновлень усе лишається увімкненим.</string>
 </resources>

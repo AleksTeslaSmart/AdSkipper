@@ -9,5 +9,12 @@
     <string name="mute_ads">Izslēgt skaņu reklāmu laikā</string>
     <string name="skipped_count">Izlaistas reklāmas: %d</string>
     <string name="btn_update">Atjaunināt uz versiju %s</string>
-    <string name="help">Kā ieslēgt:\n1. Nospiediet pogu augstāk.\n2. Atrodiet AdSkipper sadaļā “Lejupielādētās lietotnes” vai “Instalētie pakalpojumi”.\n3. Ieslēdziet slēdzi un apstipriniet.\n\nJa slēdzis ir pelēks (Android 13+): Iestatījumi → Lietotnes → AdSkipper → ⋮ (augšā pa labi) → “Atļaut ierobežotos iestatījumus”, tad mēģiniet vēlreiz.</string>
+    <string name="step1_title">1. solis. Atbloķējiet</string>
+    <string name="step1_text">Atvērsies iestatījumu ekrāns. Nospiediet ⋮ augšā pa labi → “Atļaut ierobežotos iestatījumus” un atgriezieties šeit.</string>
+    <string name="step1_btn">Atbloķēt</string>
+    <string name="step2_title">Ieslēdziet AdSkipper</string>
+    <string name="step2_text">Ieslēdziet AdSkipper slēdzi un nospiediet “Atļaut”. Jūs automātiski atgriezīsieties šeit.</string>
+    <string name="step2_btn">Ieslēgt</string>
+    <string name="done_title">Viss darbojas</string>
+    <string name="done_text">YouTube reklāmas tagad tiek izlaistas automātiski. Tas jādara tikai vienreiz: pēc restartēšanas un atjauninājumiem tas paliek ieslēgts.</string>
 </resources>

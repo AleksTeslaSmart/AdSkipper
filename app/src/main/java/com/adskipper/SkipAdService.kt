@@ -3,6 +3,7 @@ package com.adskipper
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.content.Context
+import android.content.Intent
 import android.graphics.Path
 import android.graphics.Rect
 import android.media.AudioManager
@@ -68,6 +69,18 @@ class SkipAdService : AccessibilityService() {
     override fun onServiceConnected() {
         isRunning = true
         Log.i(TAG, "Сервис запущен")
+        // Человек только что включил сервис из нашего экрана — сразу вернём его в приложение
+        // (там будет «Всё работает»), чтобы не искать дорогу назад через настройки.
+        val p = prefs()
+        if (p.getBoolean(MainActivity.PREF_AWAITING, false)) {
+            p.edit().putBoolean(MainActivity.PREF_AWAITING, false).apply()
+            try {
+                startActivity(Intent(this, MainActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            } catch (e: Exception) {
+                Log.w(TAG, "Не удалось вернуться в приложение", e)
+            }
+        }
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {

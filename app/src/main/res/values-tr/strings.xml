@@ -9,5 +9,12 @@
     <string name="mute_ads">Reklam sırasında sesi kapat</string>
     <string name="skipped_count">Atlanan reklam: %d</string>
     <string name="btn_update">%s sürümüne güncelle</string>
-    <string name="help">Nasıl açılır:\n1. Yukarıdaki düğmeye dokunun.\n2. AdSkipper’ı «İndirilen uygulamalar» veya «Yüklü hizmetler» bölümünde bulun.\n3. Anahtarı açın ve onaylayın.\n\nAnahtar griyse (Android 13+): Ayarlar → Uygulamalar → AdSkipper → ⋮ (sağ üst) → «Kısıtlanmış ayarlara izin ver», sonra tekrar deneyin.</string>
+    <string name="step1_title">Adım 1. Kilidi açın</string>
+    <string name="step1_text">Bir ayarlar ekranı açılacak. Sağ üstteki ⋮ simgesine dokunun → «Kısıtlanmış ayarlara izin ver» ve buraya dönün.</string>
+    <string name="step1_btn">Kilidi aç</string>
+    <string name="step2_title">AdSkipper’ı açın</string>
+    <string name="step2_text">AdSkipper anahtarını açın ve «İzin ver»e dokunun. Otomatik olarak buraya döneceksiniz.</string>
+    <string name="step2_btn">Aç</string>
+    <string name="done_title">Her şey çalışıyor</string>
+    <string name="done_text">YouTube reklamları artık kendiliğinden geçilir. Bunu yalnızca bir kez yapmanız gerekir: yeniden başlatma ve güncellemelerden sonra da açık kalır.</string>
 </resources>

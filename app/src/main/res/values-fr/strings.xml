@@ -9,5 +9,12 @@
     <string name="mute_ads">Couper le son pendant les pubs</string>
     <string name="skipped_count">Pubs passées : %d</string>
     <string name="btn_update">Mettre à jour vers la version %s</string>
-    <string name="help">Comment l’activer :\n1. Appuyez sur le bouton ci-dessus.\n2. Trouvez AdSkipper dans « Applications téléchargées » ou « Services installés ».\n3. Activez l’interrupteur et confirmez.\n\nSi l’interrupteur est grisé (Android 13+) : Paramètres → Applications → AdSkipper → ⋮ (en haut à droite) → « Autoriser les paramètres restreints », puis réessayez.</string>
+    <string name="step1_title">Étape 1. Débloquer</string>
+    <string name="step1_text">Un écran de paramètres va s’ouvrir. Appuyez sur ⋮ en haut à droite → « Autoriser les paramètres restreints », puis revenez ici.</string>
+    <string name="step1_btn">Débloquer</string>
+    <string name="step2_title">Activez AdSkipper</string>
+    <string name="step2_text">Activez l’interrupteur AdSkipper et appuyez sur « Autoriser ». Vous reviendrez ici automatiquement.</string>
+    <string name="step2_btn">Activer</string>
+    <string name="done_title">Tout fonctionne</string>
+    <string name="done_text">Les pubs YouTube sont maintenant passées automatiquement. À faire une seule fois : cela reste actif après un redémarrage ou une mise à jour.</string>
 </resources>

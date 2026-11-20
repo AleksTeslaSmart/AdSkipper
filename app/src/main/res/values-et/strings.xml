@@ -9,5 +9,12 @@
     <string name="mute_ads">Vaigista heli reklaamide ajal</string>
     <string name="skipped_count">Vahele jäetud reklaame: %d</string>
     <string name="btn_update">Uuenda versioonile %s</string>
-    <string name="help">Kuidas sisse lülitada:\n1. Vajutage ülal olevat nuppu.\n2. Leidke AdSkipper jaotisest „Allalaaditud rakendused“ või „Installitud teenused“.\n3. Lülitage lüliti sisse ja kinnitage.\n\nKui lüliti on hall (Android 13+): Seaded → Rakendused → AdSkipper → ⋮ (üleval paremal) → „Luba piiratud seaded“, seejärel proovige uuesti.</string>
+    <string name="step1_title">1. samm. Avage lukk</string>
+    <string name="step1_text">Avaneb seadete ekraan. Vajutage üleval paremal ⋮ → „Luba piiratud seaded“ ja tulge siia tagasi.</string>
+    <string name="step1_btn">Ava lukk</string>
+    <string name="step2_title">Lülitage AdSkipper sisse</string>
+    <string name="step2_text">Lülitage AdSkipperi lüliti sisse ja vajutage „Luba“. Jõuate automaatselt siia tagasi.</string>
+    <string name="step2_btn">Lülita sisse</string>
+    <string name="done_title">Kõik töötab</string>
+    <string name="done_text">YouTube’i reklaamid jäetakse nüüd automaatselt vahele. Seda tuleb teha ainult üks kord: see jääb sisse ka pärast taaskäivitust ja uuendusi.</string>
 </resources>

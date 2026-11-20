@@ -9,5 +9,12 @@
     <string name="mute_ads">Ton während Werbung stummschalten</string>
     <string name="skipped_count">Übersprungene Werbung: %d</string>
     <string name="btn_update">Auf Version %s aktualisieren</string>
-    <string name="help">So schaltest du ihn ein:\n1. Tippe oben auf den Button.\n2. Suche AdSkipper unter „Heruntergeladene Apps“ oder „Installierte Dienste“.\n3. Schalter einschalten und bestätigen.\n\nWenn der Schalter grau ist (Android 13+): Einstellungen → Apps → AdSkipper → ⋮ (oben rechts) → „Eingeschränkte Einstellungen zulassen“, dann erneut versuchen.</string>
+    <string name="step1_title">Schritt 1. Entsperren</string>
+    <string name="step1_text">Ein Einstellungsbildschirm öffnet sich. Tippe oben rechts auf ⋮ → „Eingeschränkte Einstellungen zulassen“ und komm hierher zurück.</string>
+    <string name="step1_btn">Entsperren</string>
+    <string name="step2_title">AdSkipper einschalten</string>
+    <string name="step2_text">Schalte AdSkipper ein und tippe auf „Zulassen“. Danach kommst du automatisch hierher zurück.</string>
+    <string name="step2_btn">Einschalten</string>
+    <string name="done_title">Alles läuft</string>
+    <string name="done_text">YouTube-Werbung wird jetzt automatisch übersprungen. Das musst du nur einmal machen: Es bleibt nach Neustarts und Updates an.</string>
 </resources>

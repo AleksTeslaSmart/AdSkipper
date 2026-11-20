@@ -9,5 +9,12 @@
     <string name="mute_ads">Silenciar durante os anúncios</string>
     <string name="skipped_count">Anúncios pulados: %d</string>
     <string name="btn_update">Atualizar para a versão %s</string>
-    <string name="help">Como ativar:\n1. Toque no botão acima.\n2. Encontre o AdSkipper em «Apps baixados» ou «Serviços instalados».\n3. Ative a chave e confirme.\n\nSe a chave estiver cinza (Android 13+): Configurações → Apps → AdSkipper → ⋮ (canto superior direito) → «Permitir configurações restritas» e tente de novo.</string>
+    <string name="step1_title">Passo 1. Desbloqueie</string>
+    <string name="step1_text">Uma tela de configurações vai abrir. Toque em ⋮ no canto superior direito → «Permitir configurações restritas» e volte aqui.</string>
+    <string name="step1_btn">Desbloquear</string>
+    <string name="step2_title">Ative o AdSkipper</string>
+    <string name="step2_text">Ative a chave do AdSkipper e toque em «Permitir». Você volta para cá automaticamente.</string>
+    <string name="step2_btn">Ativar</string>
+    <string name="done_title">Tudo funcionando</string>
+    <string name="done_text">Os anúncios do YouTube agora são pulados sozinhos. Só precisa fazer isso uma vez: continua ativo depois de reiniciar e atualizar.</string>
 </resources>

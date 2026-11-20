@@ -9,5 +9,12 @@
     <string name="mute_ads">Выключать звук во время рекламы</string>
     <string name="skipped_count">Пропущено реклам: %d</string>
     <string name="btn_update">Обновить до версии %s</string>
-    <string name="help">Как включить:\n1. Нажмите кнопку выше.\n2. Найдите AdSkipper в разделе «Скачанные приложения» или «Установленные службы».\n3. Включите переключатель и подтвердите.\n\nЕсли переключатель серый (Android 13+): Настройки → Приложения → AdSkipper → ⋮ (вверху справа) → «Разрешить ограниченные настройки», затем повторите.</string>
+    <string name="step1_title">Шаг 1. Снимите блокировку</string>
+    <string name="step1_text">Откроется экран настроек. Нажмите ⋮ в правом верхнем углу → «Разрешить настройки с ограниченным доступом» и вернитесь сюда.</string>
+    <string name="step1_btn">Снять блокировку</string>
+    <string name="step2_title">Включите AdSkipper</string>
+    <string name="step2_text">Включите переключатель AdSkipper и нажмите «Разрешить». Вы сразу вернётесь сюда.</string>
+    <string name="step2_btn">Включить</string>
+    <string name="done_title">Всё работает</string>
+    <string name="done_text">Реклама в YouTube теперь пропускается сама. Включать нужно только один раз: после перезагрузки и обновлений всё остаётся включённым.</string>
 </resources>
