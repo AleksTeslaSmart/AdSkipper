@@ -1,0 +1,51 @@
+# Publishes site/ to GitHub Pages: https://aleksteslasmart.github.io/AdSkipper/
+# site/index.html is written for claude.ai hosting (no <head> of its own), so here it is
+# wrapped in a full HTML document with site/pages-head.html (description, link preview, reset).
+name: Website
+
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build page
+        run: |
+          mkdir -p _site
+          {
+            printf '<!doctype html>\n<html lang="ru">\n<head>\n<meta charset="utf-8">\n'
+            printf '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+            cat site/pages-head.html
+            printf '</head>\n<body>\n'
+            cat site/index.html
+            printf '\n</body>\n</html>\n'
+          } > _site/index.html
+          cp site/og-image.png _site/
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
