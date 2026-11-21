@@ -10,19 +10,30 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import java.util.Locale
 
 /**
  * Следит за окнами YouTube и нажимает кнопку «Пропустить рекламу», как только она появляется.
  * Опционально выключает звук, пока идёт реклама.
+ *
+ * Экономия батареи:
+ *  - экран проверяется не чаще 1 раза в секунду (во время рекламы — 2 раза, чтобы быстрее нажать «Пропустить»);
+ *  - события от YouTube не обрабатываются по одному: сколько бы их ни пришло, будет одна проверка;
+ *  - экран целиком не перебирается: YouTube сам ищет нужные элементы по id и по тексту (один запрос на слово);
+ *  - ищутся только слова на языке телефона и на английском, а не на всех 11 языках.
  */
 class SkipAdService : AccessibilityService() {
 
     companion object {
         private const val TAG = "AdSkipper"
         private const val YT = "com.google.android.youtube"
+
+        private const val IDLE_INTERVAL_MS = 1000L   // обычная проверка: 1 раз в секунду
+        private const val AD_INTERVAL_MS = 500L      // пока идёт реклама
 
         // Известные id кнопки пропуска в разных версиях YouTube
         private val SKIP_IDS = listOf(
@@ -57,13 +68,26 @@ class SkipAdService : AccessibilityService() {
             RegexOption.IGNORE_CASE
         )
 
-        // Запасной вариант: поиск по тексту (разные языки интерфейса)
+        // Все варианты надписи на кнопке пропуска — для точного сравнения
         private val SKIP_TEXTS = listOf(
             "Пропустить", "Пропустить рекламу", "Skip", "Skip ad", "Skip ads",
             "Пропустити", "Пропустити рекламу", "Überspringen", "Werbung überspringen",
             "Passer", "Ignorer", "Saltar", "Omitir", "Saltar anuncio", "Pular", "Pular anúncio",
             "Ignorar", "Atla", "Reklamı atla", "Izlaist", "Izlaist reklāmu", "Praleisti",
             "Praleisti reklamą", "Jäta vahele", "Salta", "Pomiń",
+        )
+
+        // Что искать на каждом языке: короткое слово находит и «Пропустить», и «Пропустить рекламу»
+        private val SKIP_SEARCH = mapOf(
+            "ru" to listOf("Пропустить"), "uk" to listOf("Пропустити"), "de" to listOf("Überspringen"),
+            "fr" to listOf("Passer", "Ignorer"), "es" to listOf("Saltar", "Omitir"), "pt" to listOf("Pular", "Ignorar"),
+            "tr" to listOf("atla"), "lv" to listOf("Izlaist"), "lt" to listOf("Praleisti"), "et" to listOf("Jäta vahele"),
+            "it" to listOf("Salta"), "pl" to listOf("Pomiń"),
+        )
+        private val AD_SEARCH = mapOf(
+            "ru" to listOf("Реклама"), "uk" to listOf("Реклама"), "de" to listOf("Anzeige", "Werbung"),
+            "fr" to listOf("Annonce", "Publicité"), "es" to listOf("Anuncio"), "pt" to listOf("Anúncio"),
+            "tr" to listOf("Reklam"), "lv" to listOf("Reklāma"), "lt" to listOf("Reklama"), "et" to listOf("Reklaam"),
         )
 
         @Volatile
@@ -75,18 +99,27 @@ class SkipAdService : AccessibilityService() {
     private var lastScan = 0L
     private var lastClick = 0L
     private var mutedByUs = false
-    private var polling = false
+    private var scanPending = false
+    private var adActive = false
 
-    // Пока реклама на экране — проверяем каждые 500 мс, даже если событий нет
-    private val pollRunnable = object : Runnable {
-        override fun run() {
-            if (scan()) handler.postDelayed(this, 300) else polling = false
-        }
+    // Слова для поиска: язык телефона + английский (YouTube обычно говорит на языке телефона)
+    private lateinit var skipWords: List<String>
+    private lateinit var adWords: List<String>
+
+    private val scanRunnable = Runnable {
+        scanPending = false
+        lastScan = SystemClock.uptimeMillis()
+        adActive = scan()
+        // Пока реклама на экране, проверяем дальше сами, даже если YouTube молчит
+        if (adActive) schedule(AD_INTERVAL_MS)
     }
 
     override fun onServiceConnected() {
         isRunning = true
-        Log.i(TAG, "Сервис запущен")
+        val lang = Locale.getDefault().language
+        skipWords = (SKIP_SEARCH[lang] ?: emptyList()) + "Skip"
+        adWords = (AD_SEARCH[lang] ?: emptyList()) + listOf("Ad", "Sponsored")
+        Log.i(TAG, "Сервис запущен ($lang)")
         // Человек только что включил сервис из нашего экрана — сразу вернём его в приложение
         // (там будет «Всё работает»), чтобы не искать дорогу назад через настройки.
         val p = prefs()
@@ -103,13 +136,16 @@ class SkipAdService : AccessibilityService() {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event?.packageName?.toString() != YT) return
-        val now = System.currentTimeMillis()
-        if (now - lastScan < 150) return   // не нагружаем процессор на каждом событии
-        lastScan = now
-        if (scan() && !polling) {
-            polling = true
-            handler.postDelayed(pollRunnable, 500)
-        }
+        // Все события до ближайшей проверки сливаются в одну проверку
+        schedule(if (adActive) AD_INTERVAL_MS else IDLE_INTERVAL_MS)
+    }
+
+    /** Ставит одну проверку не раньше, чем через [interval] после предыдущей. */
+    private fun schedule(interval: Long) {
+        if (scanPending) return
+        scanPending = true
+        val wait = (lastScan + interval - SystemClock.uptimeMillis()).coerceAtLeast(0)
+        handler.postDelayed(scanRunnable, wait)
     }
 
     /** @return true, если на экране сейчас реклама */
@@ -123,6 +159,7 @@ class SkipAdService : AccessibilityService() {
         val skipNode = findSkipButton(root)
         // Реклама видна сразу с первой секунды — по меткам и таймеру, не дожидаясь,
         // пока появится кнопка «Пропустить» (она появляется только через ~5 секунд).
+        // Проверки идут от дешёвых к дорогим и останавливаются на первой сработавшей.
         val adVisible = skipNode != null ||
             AD_IDS.any { id -> root.findAccessibilityNodeInfosByViewId(id).any { it.isVisibleToUser } } ||
             hasAdLabel(root)
@@ -132,19 +169,15 @@ class SkipAdService : AccessibilityService() {
         return adVisible
     }
 
-    /** Обходит экран и ищет метку вида «Реклама · 0:15». Ограничен по числу элементов, чтобы не тормозить. */
+    /** Ищет метку вида «Реклама · 0:15»: YouTube сам находит элементы с этим словом, мы только проверяем текст. */
     private fun hasAdLabel(root: AccessibilityNodeInfo): Boolean {
-        val queue = ArrayDeque<AccessibilityNodeInfo>()
-        queue.add(root)
-        var seen = 0
-        while (queue.isNotEmpty() && seen < 600) {
-            val n = queue.removeFirst()
-            seen++
-            for (s in arrayOf(n.text, n.contentDescription)) {
-                val t = s?.toString()?.trim() ?: continue
-                if (t.length in 2..60 && AD_LABEL.containsMatchIn(t) && n.isVisibleToUser) return true
+        for (word in adWords) {
+            for (n in root.findAccessibilityNodeInfosByText(word)) {
+                for (s in arrayOf(n.text, n.contentDescription)) {
+                    val t = s?.toString()?.trim() ?: continue
+                    if (t.length in 2..60 && AD_LABEL.containsMatchIn(t) && n.isVisibleToUser) return true
+                }
             }
-            for (i in 0 until n.childCount) n.getChild(i)?.let { queue.add(it) }
         }
         return false
     }
@@ -153,8 +186,8 @@ class SkipAdService : AccessibilityService() {
         for (id in SKIP_IDS) {
             root.findAccessibilityNodeInfosByViewId(id).firstOrNull { it.isVisibleToUser }?.let { return it }
         }
-        for (text in SKIP_TEXTS) {
-            root.findAccessibilityNodeInfosByText(text).firstOrNull { node ->
+        for (word in skipWords) {
+            root.findAccessibilityNodeInfosByText(word).firstOrNull { node ->
                 val t = (node.text ?: node.contentDescription)?.toString()?.trim() ?: ""
                 // только точное совпадение — чтобы не нажать на видео со словом «Skip» в названии
                 node.isVisibleToUser && SKIP_TEXTS.any { it.equals(t, ignoreCase = true) }
@@ -164,7 +197,7 @@ class SkipAdService : AccessibilityService() {
     }
 
     private fun clickNode(node: AccessibilityNodeInfo) {
-        val now = System.currentTimeMillis()
+        val now = SystemClock.uptimeMillis()
         if (now - lastClick < 1000) return
         lastClick = now
 
