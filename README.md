@@ -2,7 +2,7 @@
 
 **AdSkipper taps “Skip ad” for you the moment it appears in the YouTube app, and mutes the sound while an ad is playing.** Free, open source, no account, no tracking.
 
-**[⬇ Download the APK](https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk)** · **[Website & install guide](https://claude.ai/artifact/Kxt33ovzCAr3y7yEzrCk9N)** · [All releases](https://github.com/AleksTeslaSmart/AdSkipper/releases)
+**[⬇ Download the APK](https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk)** · **[Website & install guide](https://aleksteslasmart.github.io/AdSkipper/)** · [All releases](https://github.com/AleksTeslaSmart/AdSkipper/releases)
 
 Android 7.0+ · ~650 KB · 11 languages: English, Русский, Українська, Español, Deutsch, Français, Português, Türkçe, Latviešu, Lietuvių, Eesti
 
@@ -26,7 +26,7 @@ AdSkipper is an Android [accessibility service](https://developer.android.com/gu
    - **Unlock** (Android 13+): in the screen that opens, tap ⋮ → *Allow restricted settings*.
    - **Turn on**: switch AdSkipper on and tap *Allow*. You're taken back to the app automatically.
 
-The [website](https://claude.ai/artifact/Kxt33ovzCAr3y7yEzrCk9N) explains every warning your phone may show and what to tap.
+The [website](https://aleksteslasmart.github.io/AdSkipper/) explains every warning your phone may show and what to tap.
 
 ## Privacy
 
@@ -53,4 +53,4 @@ Releases are built and signed by GitHub Actions ([build.yml](.github/workflows/b
 ### Русский
 
 AdSkipper сам нажимает «Пропустить» на рекламе в приложении YouTube и выключает звук, пока идёт реклама. Бесплатно, с открытым кодом, без регистрации и слежки.
-**[Скачать APK](https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk)** · **[Сайт и инструкция](https://claude.ai/artifact/Kxt33ovzCAr3y7yEzrCk9N)**
+**[Скачать APK](https://github.com/AleksTeslaSmart/AdSkipper/releases/latest/download/AdSkipper.apk)** · **[Сайт и инструкция](https://aleksteslasmart.github.io/AdSkipper/)**
