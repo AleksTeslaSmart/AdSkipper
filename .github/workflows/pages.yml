@@ -38,7 +38,7 @@ jobs:
             cat site/index.html
             printf '\n</body>\n</html>\n'
           } > _site/index.html
-          cp site/og-image.png _site/
+          cp site/og-image.png site/sitemap.xml _site/
           touch _site/.nojekyll
 
       - uses: actions/configure-pages@v5
