@@ -47,5 +47,9 @@ jobs:
         with:
           path: _site
 
+      # The uploaded artifact sometimes isn't visible to the deploy step right away
+      - name: Wait for the artifact
+        run: sleep 20
+
       - id: deployment
         uses: actions/deploy-pages@v4
