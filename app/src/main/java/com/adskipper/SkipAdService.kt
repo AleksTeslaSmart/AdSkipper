@@ -182,18 +182,42 @@ class SkipAdService : AccessibilityService() {
         return false
     }
 
+    /**
+     * Ищет кнопку «Пропустить», которую уже можно нажать.
+     * Нажимаем только то, на чём действительно написано «Пропустить»/«Skip»: по одному id
+     * YouTube может держать скрытую или ещё не готовую кнопку, и нажатие «вслепую»
+     * попадало по соседним кнопкам плеера (например, по субтитрам «CC»).
+     */
     private fun findSkipButton(root: AccessibilityNodeInfo): AccessibilityNodeInfo? {
         for (id in SKIP_IDS) {
-            root.findAccessibilityNodeInfosByViewId(id).firstOrNull { it.isVisibleToUser }?.let { return it }
+            root.findAccessibilityNodeInfosByViewId(id).firstOrNull { n ->
+                n.isVisibleToUser && n.isEnabled && hasSkipText(n, depth = 2)
+            }?.let { return it }
         }
         for (word in skipWords) {
-            root.findAccessibilityNodeInfosByText(word).firstOrNull { node ->
-                val t = (node.text ?: node.contentDescription)?.toString()?.trim() ?: ""
-                // только точное совпадение — чтобы не нажать на видео со словом «Skip» в названии
-                node.isVisibleToUser && SKIP_TEXTS.any { it.equals(t, ignoreCase = true) }
+            root.findAccessibilityNodeInfosByText(word).firstOrNull { n ->
+                // только точное совпадение — чтобы не нажать на видео или субтитры со словом «Skip»,
+                // и только если это сама кнопка или текст прямо на ней
+                n.isVisibleToUser && isSkipText(n) && (n.isClickable || n.parent?.isClickable == true)
             }?.let { return it }
         }
         return null
+    }
+
+    private fun isSkipText(n: AccessibilityNodeInfo): Boolean {
+        val t = (n.text ?: n.contentDescription)?.toString()?.trim() ?: return false
+        return SKIP_TEXTS.any { it.equals(t, ignoreCase = true) }
+    }
+
+    /** Есть ли надпись «Пропустить» на самом элементе или на его детях (кнопка = рамка + текст внутри). */
+    private fun hasSkipText(n: AccessibilityNodeInfo, depth: Int): Boolean {
+        if (isSkipText(n)) return true
+        if (depth == 0) return false
+        for (i in 0 until n.childCount) {
+            val c = n.getChild(i) ?: continue
+            if (hasSkipText(c, depth - 1)) return true
+        }
+        return false
     }
 
     private fun clickNode(node: AccessibilityNodeInfo) {
@@ -201,18 +225,22 @@ class SkipAdService : AccessibilityService() {
         if (now - lastClick < 1000) return
         lastClick = now
 
-        // 1) Обычный клик по элементу или его кликабельному родителю
+        // 1) Обычный клик по самой кнопке или её ближайшему родителю (не выше — выше уже плеер целиком)
         var n: AccessibilityNodeInfo? = node
         var depth = 0
-        while (n != null && depth < 5) {
+        while (n != null && depth < 2) {
             if (n.isClickable && n.performAction(AccessibilityNodeInfo.ACTION_CLICK)) {
                 onSkipped(); return
             }
             n = n.parent; depth++
         }
-        // 2) Запасной вариант — тап жестом по центру кнопки
+        // 2) Запасной вариант — тап по центру кнопки, но только если она похожа на кнопку «Пропустить»:
+        //    небольшая и не в верхней четверти экрана (там CC, настройки и трансляция).
         val r = Rect().also { node.getBoundsInScreen(it) }
-        if (!r.isEmpty) tap(r.exactCenterX(), r.exactCenterY())
+        val screenH = resources.displayMetrics.heightPixels
+        val screenW = resources.displayMetrics.widthPixels
+        val looksRight = !r.isEmpty && r.height() < screenH / 4 && r.width() < screenW / 2 && r.top > screenH / 4
+        if (looksRight) tap(r.exactCenterX(), r.exactCenterY())
     }
 
     private fun tap(x: Float, y: Float) {
