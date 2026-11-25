@@ -32,6 +32,9 @@ class SkipAdService : AccessibilityService() {
         private const val TAG = "AdSkipper"
         private const val YT = "com.google.android.youtube"
 
+        private const val QUIET_LEVEL = 1             // самая тихая ступень громкости, но не 0
+        private const val PREF_SAVED_VOLUME = "saved_volume"
+
         private const val IDLE_INTERVAL_MS = 1000L   // обычная проверка: 1 раз в секунду
         private const val AD_INTERVAL_MS = 500L      // пока идёт реклама
 
@@ -120,6 +123,8 @@ class SkipAdService : AccessibilityService() {
         skipWords = (SKIP_SEARCH[lang] ?: emptyList()) + "Skip"
         adWords = (AD_SEARCH[lang] ?: emptyList()) + listOf("Ad", "Sponsored")
         Log.i(TAG, "Сервис запущен ($lang)")
+        // Если сервис остановили посреди рекламы, громкость могла остаться тихой — вернём её.
+        restoreVolume(getSystemService(Context.AUDIO_SERVICE) as AudioManager)
         // Человек только что включил сервис из нашего экрана — сразу вернём его в приложение
         // (там будет «Всё работает»), чтобы не искать дорогу назад через настройки.
         val p = prefs()
@@ -259,18 +264,37 @@ class SkipAdService : AccessibilityService() {
         Log.i(TAG, "Реклама пропущена")
     }
 
+    /**
+     * На время рекламы ставим громкость на самую тихую ступень (1), а не выключаем звук совсем:
+     * если звук выключен полностью, YouTube сам включает субтитры, и они остаются после рекламы.
+     * Прежняя громкость запоминается и возвращается, когда реклама закончится.
+     */
     private fun updateMute(adVisible: Boolean) {
-        val wantMute = adVisible && prefs().getBoolean("mute_ads", true)
-        if (wantMute == mutedByUs) return
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val am = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-            am.adjustStreamVolume(
-                AudioManager.STREAM_MUSIC,
-                if (wantMute) AudioManager.ADJUST_MUTE else AudioManager.ADJUST_UNMUTE,
-                0
-            )
+        val wantQuiet = adVisible && prefs().getBoolean("mute_ads", true)
+        if (wantQuiet == mutedByUs) return
+        val am = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val p = prefs()
+        if (wantQuiet) {
+            val current = am.getStreamVolume(AudioManager.STREAM_MUSIC)
+            if (current > QUIET_LEVEL) {
+                p.edit().putInt(PREF_SAVED_VOLUME, current).apply()   // переживёт перезапуск сервиса
+                am.setStreamVolume(AudioManager.STREAM_MUSIC, QUIET_LEVEL, 0)
+            }
+        } else {
+            restoreVolume(am)
         }
-        mutedByUs = wantMute
+        mutedByUs = wantQuiet
+    }
+
+    /** Возвращает громкость, если мы её убавляли. Если человек сам поменял громкость во время рекламы — не трогаем. */
+    private fun restoreVolume(am: AudioManager) {
+        val p = prefs()
+        val saved = p.getInt(PREF_SAVED_VOLUME, -1)
+        if (saved < 0) return
+        if (am.getStreamVolume(AudioManager.STREAM_MUSIC) == QUIET_LEVEL) {
+            am.setStreamVolume(AudioManager.STREAM_MUSIC, saved, 0)
+        }
+        p.edit().remove(PREF_SAVED_VOLUME).apply()
     }
 
     private fun prefs() = getSharedPreferences("adskipper", Context.MODE_PRIVATE)
